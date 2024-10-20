@@ -1,0 +1,7 @@
+The following textual description follows the closed-world assumption, meaning that only the activities specified can be executed in the specified order. Any possible activity and execution that is not specified is considered impossible.
+Initially start "start automation project".
+After "start automation project" ends, immediately start "collect functional requirements".
+After "collect functional requirements" ends, immediately start "purchase hardware", "purchase software".
+After "purchase hardware" ends, "purchase software" ends, immediately start "integration".
+After "integration" ends, immediately start "test".
+After "test" ends, the process finishes.
