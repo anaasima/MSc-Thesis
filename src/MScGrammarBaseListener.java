@@ -4,10 +4,10 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.*;
 
 /**
  * This class provides an empty implementation of {@link MScGrammarListener},
@@ -69,7 +69,7 @@ public class MScGrammarBaseListener implements MScGrammarListener {
 	public void exitStatement(MScGrammarParser.StatementContext ctx) {
 		for (String postActivityTransition : postActivityTransitions) {
 			for (String preActivityTransition : preActivityTransitions) {
-				String place = postActivityTransition + "_" + preActivityTransition;
+				String place = postActivityTransition + "__" + preActivityTransition;
 				places.add(place);
 				flows.add(new Flow(postActivityTransition, place));
 				flows.add(new Flow(place, preActivityTransition));
@@ -104,6 +104,44 @@ public class MScGrammarBaseListener implements MScGrammarListener {
 		System.out.println("Places: " + places);
 		System.out.println("Transitions: " + transitions);
 		System.out.println("Flows: " + flows);
+
+        PrintWriter printWriter;
+        try {
+            printWriter = new PrintWriter(new FileWriter("./petri_net.tpn"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+		for (String place: places) {
+			printWriter.printf("place %s init %d;\n", place, place.equals(INITIAL_PLACE) ? 1 : 0);
+		}
+		printWriter.println();
+
+		for (String transition: transitions) {
+			List<String> inPlaces = new ArrayList<>();
+			List<String> outPlaces = new ArrayList<>();
+
+			for (Flow flow: flows) {
+				if (flow.getFrom().equals(transition)) {
+					outPlaces.add(flow.getTo());
+				} else if (flow.getTo().equals(transition)) {
+					inPlaces.add(flow.getFrom());
+				}
+			}
+
+			printWriter.printf("trans %s in %s out %s;\n", transition, getPlacesString(inPlaces), getPlacesString(outPlaces));
+		}
+
+		printWriter.close();
+	}
+
+	private String getPlacesString(List<String> places) {
+		StringBuilder builder = new StringBuilder();
+		for (String place: places) {
+			builder.append(place);
+			builder.append(" ");
+		}
+		return builder.toString().trim();
 	}
 
 	// -----------------------------------------------------------------------------------------------

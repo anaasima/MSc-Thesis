@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 public class Main {
     public static void main(String[] args) throws Exception {
         String filePath = "C:\\Users\\Ana-Maria\\IdeaProjects\\MSc-Thesis\\src\\grammar.txt";
+        // String filePath = "C:\\Users\\anton\\IdeaProjects\\MSc-Thesis\\src\\grammar.txt";
         CharStream input = new ANTLRInputStream(new FileInputStream(filePath));
         MScGrammarLexer lexer = new MScGrammarLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);

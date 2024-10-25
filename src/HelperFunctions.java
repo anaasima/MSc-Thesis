@@ -7,8 +7,8 @@ public class HelperFunctions {
         StringBuilder sb = new StringBuilder();
         for (TerminalNode word : words) {
             sb.append(word.getText());
-            sb.append(" ");
+            sb.append("_");
         }
-        return sb.toString().trim();
+        return sb.substring(0, sb.length() - 1);
     }
 }

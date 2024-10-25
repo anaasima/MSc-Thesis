@@ -2,11 +2,15 @@ import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashSet;
 import java.util.Set;
 
 public class MScGrammarDeclareListener implements MScGrammarListener {
     private final Set<DeclareConstraint> constraints = new HashSet<>();
+    private final Set<String> activities = new HashSet<>();
 
     private Set<String> preActivityTransitions;
     private Set<String> postActivityTransitions;
@@ -17,7 +21,7 @@ public class MScGrammarDeclareListener implements MScGrammarListener {
 
     @Override
     public void exitClosingStatement(MScGrammarParser.ClosingStatementContext ctx) {
-        constraints.add(new DeclareConstraint(DeclareConstraintType.END, HelperFunctions.getActivityText(ctx.postActivityExpression().activity(0).WORD()), null));
+        // constraints.add(new DeclareConstraint(DeclareConstraintType.END, HelperFunctions.getActivityText(ctx.postActivityExpression().activity(0).WORD()), null));
     }
 
     @Override
@@ -69,6 +73,7 @@ public class MScGrammarDeclareListener implements MScGrammarListener {
 
     @Override
     public void exitActivity(MScGrammarParser.ActivityContext ctx) {
+        activities.add(HelperFunctions.getActivityText(ctx.WORD()));
     }
 
     @Override
@@ -88,7 +93,25 @@ public class MScGrammarDeclareListener implements MScGrammarListener {
 
     @Override
     public void exitDescription(MScGrammarParser.DescriptionContext ctx) {
+        System.out.println("Activities: " + activities);
         System.out.println("Constraints: " + constraints);
+
+        PrintWriter printWriter;
+        try {
+            printWriter = new PrintWriter(new FileWriter("./declare_model.decl"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        for (String activity: activities) {
+            printWriter.printf("activity %s\n", activity);
+        }
+
+        for (DeclareConstraint constraint: constraints) {
+            printWriter.printf("%s\n", constraint.getRumString());
+        }
+
+        printWriter.close();
     }
 
     // -----------------------------------------------------------------------------------------------

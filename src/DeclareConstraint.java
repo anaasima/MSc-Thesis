@@ -21,6 +21,17 @@ public class DeclareConstraint {
         return to;
     }
 
+    public String getRumString() {
+        StringBuilder baseString = new StringBuilder(type.getRumName() + "[" + from);
+        if (to != null) {
+            baseString.append(", ").append(to);
+        }
+        baseString.append("]");
+        baseString.append(" |".repeat(type.getTrailingPipes()));
+
+        return baseString.toString();
+    }
+
     @Override
     public String toString() {
         String basePrint = type + "(" + from;
