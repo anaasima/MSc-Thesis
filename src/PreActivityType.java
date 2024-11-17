@@ -1,0 +1,6 @@
+public enum PreActivityType {
+    IMMEDIATELY_SEQUENCE,
+    IMMEDIATELY_AND,
+    IMMEDIATELY_OR,
+    EVENTUALLY_SEQUENCE,
+}

@@ -25,27 +25,66 @@ public class MScGrammarDeclareListener implements MScGrammarListener {
     }
 
     @Override
-    public void enterPostActivityExpression(MScGrammarParser.PostActivityExpressionContext ctx) {
-        postActivityTransitions = new HashSet<>();
+    public void enterAndPostActivityExpression(MScGrammarParser.AndPostActivityExpressionContext ctx) {
+
     }
 
     @Override
-    public void exitPostActivityExpression(MScGrammarParser.PostActivityExpressionContext ctx) {
+    public void exitAndPostActivityExpression(MScGrammarParser.AndPostActivityExpressionContext ctx) {
         for (MScGrammarParser.ActivityContext activity : ctx.activity()) {
             postActivityTransitions.add(HelperFunctions.getActivityText(activity.WORD()));
         }
     }
 
     @Override
-    public void enterPreActivityExpression(MScGrammarParser.PreActivityExpressionContext ctx) {
-        preActivityTransitions = new HashSet<>();
+    public void enterAndPreActivityExpression(MScGrammarParser.AndPreActivityExpressionContext ctx) {
+
     }
 
     @Override
-    public void exitPreActivityExpression(MScGrammarParser.PreActivityExpressionContext ctx) {
+    public void exitAndPreActivityExpression(MScGrammarParser.AndPreActivityExpressionContext ctx) {
         for (MScGrammarParser.ActivityContext activity : ctx.activity()) {
             preActivityTransitions.add(HelperFunctions.getActivityText(activity.WORD()));
         }
+    }
+
+    @Override
+    public void enterOrPostActivityExpression(MScGrammarParser.OrPostActivityExpressionContext ctx) {
+
+    }
+
+    @Override
+    public void exitOrPostActivityExpression(MScGrammarParser.OrPostActivityExpressionContext ctx) {
+
+    }
+
+    @Override
+    public void enterOrPreActivityExpression(MScGrammarParser.OrPreActivityExpressionContext ctx) {
+
+    }
+
+    @Override
+    public void exitOrPreActivityExpression(MScGrammarParser.OrPreActivityExpressionContext ctx) {
+
+    }
+
+    @Override
+    public void enterPostActivityExpression(MScGrammarParser.PostActivityExpressionContext ctx) {
+        postActivityTransitions = new HashSet<>();
+    }
+
+    @Override
+    public void exitPostActivityExpression(MScGrammarParser.PostActivityExpressionContext ctx) {
+    }
+
+    @Override
+    public void enterSequencePostActivityExpression(MScGrammarParser.SequencePostActivityExpressionContext ctx) {
+
+    }
+
+    @Override
+    public void exitSequencePostActivityExpression(MScGrammarParser.SequencePostActivityExpressionContext ctx) {
+
     }
 
     @Override
@@ -72,8 +111,88 @@ public class MScGrammarDeclareListener implements MScGrammarListener {
     }
 
     @Override
+    public void enterAfterStatement(MScGrammarParser.AfterStatementContext ctx) {
+
+    }
+
+    @Override
+    public void exitAfterStatement(MScGrammarParser.AfterStatementContext ctx) {
+
+    }
+
+    @Override
+    public void enterAsp(MScGrammarParser.AspContext ctx) {
+
+    }
+
+    @Override
+    public void exitAsp(MScGrammarParser.AspContext ctx) {
+
+    }
+
+    @Override
+    public void enterOsp(MScGrammarParser.OspContext ctx) {
+
+    }
+
+    @Override
+    public void exitOsp(MScGrammarParser.OspContext ctx) {
+
+    }
+
+    @Override
+    public void enterImmediatelyExpression(MScGrammarParser.ImmediatelyExpressionContext ctx) {
+
+    }
+
+    @Override
+    public void exitImmediatelyExpression(MScGrammarParser.ImmediatelyExpressionContext ctx) {
+
+    }
+
+    @Override
+    public void enterEventuallyExpression(MScGrammarParser.EventuallyExpressionContext ctx) {
+
+    }
+
+    @Override
+    public void exitEventuallyExpression(MScGrammarParser.EventuallyExpressionContext ctx) {
+
+    }
+
+    @Override
+    public void enterSequencePreActivityExpression(MScGrammarParser.SequencePreActivityExpressionContext ctx) {
+
+    }
+
+    @Override
+    public void exitSequencePreActivityExpression(MScGrammarParser.SequencePreActivityExpressionContext ctx) {
+
+    }
+
+    @Override
     public void exitActivity(MScGrammarParser.ActivityContext ctx) {
         activities.add(HelperFunctions.getActivityText(ctx.WORD()));
+    }
+
+    @Override
+    public void enterAspId(MScGrammarParser.AspIdContext ctx) {
+
+    }
+
+    @Override
+    public void exitAspId(MScGrammarParser.AspIdContext ctx) {
+
+    }
+
+    @Override
+    public void enterOspId(MScGrammarParser.OspIdContext ctx) {
+
+    }
+
+    @Override
+    public void exitOspId(MScGrammarParser.OspIdContext ctx) {
+
     }
 
     @Override
@@ -82,9 +201,8 @@ public class MScGrammarDeclareListener implements MScGrammarListener {
 
     @Override
     public void exitInitialStatement(MScGrammarParser.InitialStatementContext ctx) {
-        constraints.add(new DeclareConstraint(DeclareConstraintType.INIT, HelperFunctions.getActivityText(ctx.preActivityExpression().activity(0).WORD()), null));
+        // constraints.add(new DeclareConstraint(DeclareConstraintType.INIT, HelperFunctions.getActivityText(ctx.preActivityExpression()..activity(0).WORD()), null));
     }
-
 
     @Override
     public void visitErrorNode(ErrorNode node) {

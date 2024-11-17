@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class Flow {
     private String from;
     private String to;
@@ -21,7 +23,18 @@ public class Flow {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return toString().equals(obj.toString());
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Flow flow = (Flow) o;
+        return Objects.equals(from, flow.from) && Objects.equals(to, flow.to);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hashCode(from);
+        result = 31 * result + Objects.hashCode(to);
+        return result;
     }
 }

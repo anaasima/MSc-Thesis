@@ -1,0 +1,5 @@
+public enum ContextType {
+    PRE_ACTIVITY_IMMEDIATELY,
+    PRE_ACTIVITY_EVENTUALLY,
+    POST_ACTIVITY,
+}
