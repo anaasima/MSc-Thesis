@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 public class DeclareConstraint {
     private DeclareConstraintType type;
     private String from;
@@ -43,7 +45,19 @@ public class DeclareConstraint {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return toString().equals(obj.toString());
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DeclareConstraint that = (DeclareConstraint) o;
+        return type == that.type && Objects.equals(from, that.from) && Objects.equals(to, that.to);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hashCode(type);
+        result = 31 * result + Objects.hashCode(from);
+        result = 31 * result + Objects.hashCode(to);
+        return result;
     }
 }

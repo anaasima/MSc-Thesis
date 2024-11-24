@@ -122,4 +122,50 @@ public class HelperFunctions {
 
         return flows;
     }
+
+    public static List<DeclareConstraint> getConstraintsForAspPreActivity(String aspId, List<String> aspActivities) {
+        List<DeclareConstraint> constraints = new ArrayList<>();
+
+        aspActivities.forEach(a -> constraints.add(new DeclareConstraint(DeclareConstraintType.ALTERNATE_SUCCESSION, aspId, a)));
+
+        return constraints;
+    }
+
+    public static List<DeclareConstraint> getConstraintsForAspPostActivity(String aspId, List<String> aspActivities) {
+        List<DeclareConstraint> constraints = new ArrayList<>();
+
+        aspActivities.forEach(a -> constraints.add(new DeclareConstraint(DeclareConstraintType.ALTERNATE_SUCCESSION, a, aspId)));
+
+        return constraints;
+    }
+
+    public static List<DeclareConstraint> getConstraintsForOspPreActivity(String ospId, List<String> ospActivities) {
+        List<DeclareConstraint> constraints = new ArrayList<>();
+
+        ospActivities.forEach(a -> constraints.add(new DeclareConstraint(DeclareConstraintType.ALTERNATE_PRECEDENCE, a, ospId)));
+        constraints.addAll(getNotCoExistenceConstraintsForOr(ospActivities));
+
+        return constraints;
+    }
+
+    public static List<DeclareConstraint> getConstraintsForOspPostActivity(String ospId, List<String> ospActivities) {
+        List<DeclareConstraint> constraints = new ArrayList<>();
+
+        ospActivities.forEach(a -> constraints.add(new DeclareConstraint(DeclareConstraintType.ALTERNATE_RESPONSE, a, ospId)));
+        constraints.addAll(getNotCoExistenceConstraintsForOr(ospActivities));
+
+        return constraints;
+    }
+
+    public static List<DeclareConstraint> getNotCoExistenceConstraintsForOr(List<String> orActivities) {
+        List<DeclareConstraint> constraints = new ArrayList<>();
+
+        for (int i = 0; i < orActivities.size() - 1; i++) {
+            for (int j = i + 1; j < orActivities.size(); j++) {
+                constraints.add(new DeclareConstraint(DeclareConstraintType.NOT_COEXISTENCE, orActivities.get(i), orActivities.get(j)));
+            }
+        }
+
+        return constraints;
+    }
 }

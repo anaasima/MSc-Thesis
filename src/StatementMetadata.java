@@ -10,8 +10,10 @@ public class StatementMetadata {
 
     private final List<Activity> preActivities;
     private final List<Activity> postActivities;
+    private final int statementNumber;
 
-    public StatementMetadata() {
+    public StatementMetadata(int statementNumber) {
+        this.statementNumber = statementNumber;
         preActivities = new ArrayList<>();
         postActivities = new ArrayList<>();
     }
@@ -44,6 +46,10 @@ public class StatementMetadata {
         return postActivityType;
     }
 
+    public int getStatementNumber() {
+        return statementNumber;
+    }
+
     public void setPostActivityType(PostActivityType postActivityType) {
         this.postActivityType = postActivityType;
     }
@@ -73,6 +79,7 @@ public class StatementMetadata {
                 ", preActivities=" + preActivities +
                 ", postActivities=" + postActivities +
                 ", currentContextType=" + currentContextType +
+                ", statementNumber=" + statementNumber +
                 '}';
     }
 
@@ -86,6 +93,7 @@ public class StatementMetadata {
                preActivityType == that.preActivityType &&
                postActivityType == that.postActivityType &&
                currentContextType == that.currentContextType &&
+               statementNumber == that.statementNumber &&
                Objects.equals(preActivities, that.preActivities) &&
                Objects.equals(postActivities, that.postActivities);
     }
