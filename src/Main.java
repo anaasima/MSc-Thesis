@@ -12,7 +12,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         // String filePath = "C:\\Users\\Ana-Maria\\IdeaProjects\\MSc-Thesis\\src\\grammar.txt";
-        String fileName = "pre_and_post_or";
+        String fileName = "pre_sequence_post_or";
         String filePath = FOLDER_PATH + "input\\" + fileName + ".txt";
         CharStream input = new ANTLRInputStream(new FileInputStream(filePath));
         MScGrammarLexer lexer = new MScGrammarLexer(input);
@@ -22,8 +22,8 @@ public class Main {
         SentenceParser petriNetParser = new MscGrammarPetriNetListener();
         SentenceParser declareParser = new MScGrammarDeclareListener();
 
-//        List<SentenceParser> parsers = List.of(petriNetParser);
-        List<SentenceParser> parsers = List.of(declareParser);
+        List<SentenceParser> parsers = List.of(petriNetParser);
+//        List<SentenceParser> parsers = List.of(declareParser);
         for (SentenceParser sentenceParser : parsers) {
             sentenceParser.setInputFileName(fileName);
             MScGrammarListener listener = new MScGrammarContextListener(sentenceParser);

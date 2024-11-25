@@ -4,5 +4,6 @@ Initially start "A".
 (SILENT_G_H): "G" or "H".
 
 After "A" ends, immediately start "E" and start "F" and start "SILENT_G_H".
+After "E" ends and "F" ends and "SILENT_G_H" ends, immediately start "X".
 
-After "B" ends, the process finishes.
+After "X" ends, the process finishes.
