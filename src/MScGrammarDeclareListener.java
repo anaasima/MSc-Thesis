@@ -10,11 +10,17 @@ import java.util.Set;
 public class MScGrammarDeclareListener implements SentenceParser {
     private final Set<DeclareConstraint> constraints = new HashSet<>();
 
+    private String inputFileName;
     private StatementMetadata currentStatement;
     private final SharedModelStorage modelStorage;
 
     public MScGrammarDeclareListener() {
         modelStorage = SharedModelStorage.getInstance();
+    }
+
+    @Override
+    public void setInputFileName(String inputFileName) {
+        this.inputFileName = inputFileName;
     }
 
     @Override
@@ -34,7 +40,7 @@ public class MScGrammarDeclareListener implements SentenceParser {
 
     @Override
     public void handleActivity(List<TerminalNode> activityText) {
-
+        modelStorage.addTransition(HelperFunctions.getActivityText(activityText));
     }
 
     @Override
@@ -165,7 +171,7 @@ public class MScGrammarDeclareListener implements SentenceParser {
 
         PrintWriter printWriter;
         try {
-            printWriter = new PrintWriter(new FileWriter("./declare_model.decl"));
+            printWriter = new PrintWriter(new FileWriter(Main.FOLDER_PATH + "output\\declare_model_" + inputFileName + ".decl"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -204,7 +210,7 @@ public class MScGrammarDeclareListener implements SentenceParser {
         constraints.addAll(HelperFunctions.getNotCoExistenceConstraintsForOr(currentStatement.getPreActivities().stream().map(Activity::getName).toList()));
         for (Activity preActivity: currentStatement.getPreActivities()) {
             String toActivity = preActivity.getName();
-            constraints.add(new DeclareConstraint(DeclareConstraintType.ALTERNATE_PRECEDENCE, toActivity, previousActivity));
+            constraints.add(new DeclareConstraint(DeclareConstraintType.ALTERNATE_PRECEDENCE, previousActivity, toActivity));
             if (preActivity.getType() == ActivityType.AND_SUBPROCESS) {
                 constraints.addAll(HelperFunctions.getConstraintsForAspPreActivity(toActivity, modelStorage.getAndSubProcessNames(toActivity)));
             }

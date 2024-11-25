@@ -177,8 +177,6 @@ public class MScGrammarContextListener implements MScGrammarListener {
 
     @Override
     public void exitActivity(MScGrammarParser.ActivityContext ctx) {
-        modelStorage.addTransition(HelperFunctions.getActivityTextStart(ctx.WORD()));
-        modelStorage.addTransition(HelperFunctions.getActivityTextEnd(ctx.WORD()));
         sentenceParser.handleActivity((ctx.WORD()));
     }
 

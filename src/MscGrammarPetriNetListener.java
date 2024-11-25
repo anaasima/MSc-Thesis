@@ -12,6 +12,7 @@ public class MscGrammarPetriNetListener implements SentenceParser {
     private final Set<String> places = new HashSet<>();
     private final Set<Flow> flows = new HashSet<>();
 
+    private String inputFileName;
     private StatementMetadata currentStatement;
     private final SharedModelStorage modelStorage;
 
@@ -19,6 +20,11 @@ public class MscGrammarPetriNetListener implements SentenceParser {
         places.add(INITIAL_PLACE);
         places.add(FINAL_PLACE);
         modelStorage = SharedModelStorage.getInstance();
+    }
+
+    @Override
+    public void setInputFileName(String inputFileName) {
+        this.inputFileName = inputFileName;
     }
 
     @Override
@@ -42,6 +48,8 @@ public class MscGrammarPetriNetListener implements SentenceParser {
 
     @Override
     public void handleActivity(List<TerminalNode> activityText) {
+        modelStorage.addTransition(HelperFunctions.getActivityTextStart(activityText));
+        modelStorage.addTransition(HelperFunctions.getActivityTextEnd(activityText));
         places.add(HelperFunctions.getActivityIntermediatePlaceText(activityText));
     }
 
@@ -224,7 +232,7 @@ public class MscGrammarPetriNetListener implements SentenceParser {
 
         PrintWriter printWriter;
         try {
-            printWriter = new PrintWriter(new FileWriter("./petri_net.tpn"));
+            printWriter = new PrintWriter(new FileWriter(Main.FOLDER_PATH + "output\\petri_net_" + inputFileName + ".tpn"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

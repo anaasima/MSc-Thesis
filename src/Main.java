@@ -5,26 +5,32 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 import java.io.FileInputStream;
+import java.util.List;
 
 public class Main {
+    public static final String FOLDER_PATH = "C:\\Users\\anton\\IdeaProjects\\MSc-Thesis\\src\\examples\\";
+
     public static void main(String[] args) throws Exception {
         // String filePath = "C:\\Users\\Ana-Maria\\IdeaProjects\\MSc-Thesis\\src\\grammar.txt";
-        String filePath = "C:\\Users\\anton\\IdeaProjects\\MSc-Thesis\\src\\grammar.txt";
+        String fileName = "pre_and_post_sequence.txt";
+        String filePath = FOLDER_PATH + "input\\" + fileName;
         CharStream input = new ANTLRInputStream(new FileInputStream(filePath));
         MScGrammarLexer lexer = new MScGrammarLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         MScGrammarParser parser = new MScGrammarParser(tokens);
 
-        // Empty listener, to test out the grammar
-        // MScGrammarListener listener = new MScGrammarBaseListener();
-        // Petri Net parser
-        MScGrammarListener listener = new MscGrammarPetriNetListener();
-        // Declare parser
-        // MScGrammarListener listener = new MScGrammarDeclareListener();
+        SentenceParser petriNetParser = new MscGrammarPetriNetListener();
+        SentenceParser declareParser = new MScGrammarDeclareListener();
 
-        ParseTree tree = parser.description();
-        ParseTreeWalker walker = new ParseTreeWalker();
-        walker.walk(listener, tree);
-        System.out.println(); // print a \n after translation
+//        List<SentenceParser> parsers = List.of(petriNetParser);
+        List<SentenceParser> parsers = List.of(declareParser);
+        for (SentenceParser sentenceParser : parsers) {
+            sentenceParser.setInputFileName(fileName);
+            MScGrammarListener listener = new MScGrammarContextListener(sentenceParser);
+            ParseTree tree = parser.description();
+            ParseTreeWalker walker = new ParseTreeWalker();
+            walker.walk(listener, tree);
+            System.out.println(); // print a \n after translation
+        }
     }
 }

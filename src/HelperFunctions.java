@@ -142,7 +142,7 @@ public class HelperFunctions {
     public static List<DeclareConstraint> getConstraintsForOspPreActivity(String ospId, List<String> ospActivities) {
         List<DeclareConstraint> constraints = new ArrayList<>();
 
-        ospActivities.forEach(a -> constraints.add(new DeclareConstraint(DeclareConstraintType.ALTERNATE_PRECEDENCE, a, ospId)));
+        ospActivities.forEach(a -> constraints.add(new DeclareConstraint(DeclareConstraintType.ALTERNATE_PRECEDENCE, ospId, a)));
         constraints.addAll(getNotCoExistenceConstraintsForOr(ospActivities));
 
         return constraints;

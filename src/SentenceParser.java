@@ -3,6 +3,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import java.util.List;
 
 public interface SentenceParser {
+    void setInputFileName(String fileName);
     void setStatementMetadata(StatementMetadata statementMetadata);
 
     void handleInitialStatement(List<TerminalNode> initialTransition);
@@ -121,13 +122,13 @@ public interface SentenceParser {
      * Succession(A,C)
      * Succession(B,C)
      * Succession(D_or_E,C)
-//     * Not Co-Existence(D,E)
-//     * AlternateResponse(D,D_or_E)
-//     * AlternateResponse(E,D_or_E)
-//     * Exactly1(A)
-//     * Exactly1(B)
-//     * Exactly1(C)
-//     * Exactly1(D_or_E)
+     * Not Co-Existence(D,E)
+     * AlternateResponse(D,D_or_E)
+     * AlternateResponse(E,D_or_E)
+     * Exactly1(A)
+     * Exactly1(B)
+     * Exactly1(C)
+     * Exactly1(D_or_E)
      */
     void handePreEventuallyPostAnd();
 

@@ -52,6 +52,6 @@ ospId // osp = or subprocess
 WORD
     : [a-zA-Z0-9]+ ;// a sequence of alphabetic characters
 SPACE
-    : ' ' ;
+    : ' ' | '_' ;
 NEWLINE
     : '\r'? '\n' ;
