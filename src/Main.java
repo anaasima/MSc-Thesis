@@ -12,7 +12,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         // String filePath = "C:\\Users\\Ana-Maria\\IdeaProjects\\MSc-Thesis\\src\\grammar.txt";
-        String fileName = "pre_and_post_sequence.txt";
+        String fileName = "pre_and_post_or.txt";
         String filePath = FOLDER_PATH + "input\\" + fileName;
         CharStream input = new ANTLRInputStream(new FileInputStream(filePath));
         MScGrammarLexer lexer = new MScGrammarLexer(input);

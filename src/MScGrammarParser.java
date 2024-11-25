@@ -46,8 +46,7 @@ public class MScGrammarParser extends Parser {
 			"'Initially start '", "'.'", "'After '", "' ends, the process finishes.'", 
 			"', '", "': '", "' and '", "' or '", "'immediately '", "'eventually '", 
 			"'start '", "' and start '", "'either start '", "' or start '", "' ends'", 
-			"' ends and '", "'either '", "' ends or '", "'\"'", "'('", "')'", null, 
-			"' '"
+			"' ends and '", "'either '", "' ends or '", "'\"'", "'('", "')'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
