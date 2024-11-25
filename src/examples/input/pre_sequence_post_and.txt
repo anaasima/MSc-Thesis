@@ -3,7 +3,7 @@ Initially start "I".
 
 (SILENT_C_D): "C" or "D".
 
-After "I" ends, immediately start "A" and start "B" and start "SILENT_C_D".
-After "A" ends and "B" ends and "SILENT_C_D" ends, immediately start "E".
+After "I" ends, immediately start "A" and start "B" and start (SILENT_C_D).
+After "A" ends and "B" ends and (SILENT_C_D) ends, immediately start "E".
 
 After "E" ends, the process finishes.
