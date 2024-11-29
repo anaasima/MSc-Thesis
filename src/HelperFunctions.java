@@ -37,16 +37,16 @@ public class HelperFunctions {
         return "silent__" + activityName + "__" + number;
     }
 
-    private static String getChainedActivityNames(List<String> activities) {
+    public static String getChainedActivityNames(List<Activity> activities) {
         StringBuilder sb = new StringBuilder();
-        for (String activity : activities) {
-            sb.append(activity);
+        for (Activity activity : activities) {
+            sb.append(activity.getName());
             sb.append("_");
         }
         return sb.substring(0, sb.length() - 1);
     }
 
-    public static String getXorPlace(List<Activity> fromActivities, List<Activity> toActivities) {
+    public static String getIntermediatePlace(List<Activity> fromActivities, List<Activity> toActivities) {
         StringBuilder fromPlace = new StringBuilder();
         fromActivities.forEach(a -> fromPlace.append(a.getName()).append("_"));
 
@@ -57,26 +57,34 @@ public class HelperFunctions {
     }
 
     public static List<Flow> getFlowsToActivity(String toActivity, String intermediatePlace) {
+        return getFlowsToActivityOrSilentTransition(toActivity, intermediatePlace, false);
+    }
+
+    public static List<Flow> getFlowsToActivityOrSilentTransition(String toActivity, String intermediatePlace, boolean isSilentToActivity) {
         List<Flow> flows = new ArrayList<>();
 
-        flows.add(new Flow(intermediatePlace, toActivity + START_SUFFIX));
-        flows.add(new Flow(toActivity + START_SUFFIX, toActivity + EXECUTING_SUFFIX));
-        flows.add(new Flow(toActivity + EXECUTING_SUFFIX, toActivity + END_SUFFIX));
+        if (isSilentToActivity) {
+            flows.add(new Flow(intermediatePlace, toActivity));
+        } else {
+            flows.add(new Flow(intermediatePlace, toActivity + START_SUFFIX));
+            flows.add(new Flow(toActivity + START_SUFFIX, toActivity + EXECUTING_SUFFIX));
+            flows.add(new Flow(toActivity + EXECUTING_SUFFIX, toActivity + END_SUFFIX));
+        }
 
         return flows;
     }
 
-    public static List<Flow> getFlowsBetweenActivities(String fromActivity, String toActivity, String intermediatePlace) {
+    public static List<Flow> getFlowsBetweenActivities(String fromActivity, String toActivity, String intermediatePlace, boolean isSilentFromActivity) {
         List<Flow> flows = new ArrayList<>();
 
-        flows.add(new Flow(fromActivity + END_SUFFIX, intermediatePlace));
+        String flowFrom = isSilentFromActivity ? fromActivity : fromActivity + END_SUFFIX;
+        flows.add(new Flow(flowFrom, intermediatePlace));
         flows.addAll(getFlowsToActivity(toActivity, intermediatePlace));
         return flows;
     }
 
-    public static List<Flow> getFlowsBetweenActivityAndOsp(String fromActivity, List<Activity> orActivities, String intermediatePlace) {
+    public static List<Flow> getFlowsBetweenActivityAndOsp(List<Activity> orActivities, String intermediatePlace) {
         List<Flow> flows = new ArrayList<>();
-        flows.add(new Flow(fromActivity + END_SUFFIX, intermediatePlace));
 
         for (Activity activity : orActivities) {
             flows.add(new Flow(intermediatePlace, activity.getName() + START_SUFFIX));

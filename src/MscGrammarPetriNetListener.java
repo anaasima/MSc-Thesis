@@ -61,41 +61,23 @@ public class MscGrammarPetriNetListener implements SentenceParser {
 
     @Override
     public void handlePreSequencePostSequence() {
-        for (Activity postActivity : currentStatement.getPostActivities()) {
-            String fromActivity = postActivity.getName();
-            for (Activity preActivity : currentStatement.getPreActivities()) {
-                // the post and pre activities here are always of the type activity and never asp/osp
-                String toActivity = preActivity.getName();
-                String intermediatePlace = HelperFunctions.getPlaceBetweenActivities(fromActivity, toActivity);
+        String fromActivity = currentStatement.getPostActivities().get(0).getName();
+        String toActivity = currentStatement.getPreActivities().get(0).getName();
+        String intermediatePlace = HelperFunctions.getPlaceBetweenActivities(fromActivity, toActivity);
 
-                places.add(intermediatePlace);
-                flows.addAll(HelperFunctions.getFlowsBetweenActivities(fromActivity, toActivity, intermediatePlace));
-            }
-        }
+        places.add(intermediatePlace);
+        flows.addAll(HelperFunctions.getFlowsBetweenActivities(fromActivity, toActivity, intermediatePlace, false));
     }
 
     @Override
     public void handlePreAndPostSequence() {
-        for (Activity postActivity : currentStatement.getPostActivities()) {
-            String fromActivity = postActivity.getName();
-            for (Activity preActivity : currentStatement.getPreActivities()) {
-                // the post activity here is always of the type activity and never asp/osp
-                String toActivity = preActivity.getName();
-                String intermediatePlace = HelperFunctions.getPlaceBetweenActivities(fromActivity, toActivity);
-                places.add(intermediatePlace);
-
-                if (preActivity.getType() == ActivityType.ACTIVITY) {
-                    flows.addAll(HelperFunctions.getFlowsBetweenActivities(fromActivity, toActivity, intermediatePlace));
-                } else if (preActivity.getType() == ActivityType.OR_SUBPROCESS) {
-                    flows.addAll(HelperFunctions.getFlowsBetweenActivityAndOsp(fromActivity, modelStorage.getOrSubProcess(toActivity), intermediatePlace));
-                }
-            }
-        }
+        String fromActivity = currentStatement.getPostActivities().get(0).getName();
+        handlePreAnd(fromActivity, false);
     }
 
     @Override
     public void handlePreOrPostSequence() {
-        String xorPlace = HelperFunctions.getXorPlace(currentStatement.getPostActivities(), currentStatement.getPreActivities());
+        String xorPlace = HelperFunctions.getIntermediatePlace(currentStatement.getPostActivities(), currentStatement.getPreActivities());
         places.add(xorPlace);
 
         for (Activity postActivity : currentStatement.getPostActivities()) {
@@ -113,56 +95,25 @@ public class MscGrammarPetriNetListener implements SentenceParser {
 
     @Override
     public void handlePreSequencePostAnd() {
-        for (Activity postActivity : currentStatement.getPostActivities()) {
-            String fromActivity = postActivity.getName();
-            for (Activity preActivity : currentStatement.getPreActivities()) {
-                // the pre activity here is always of the type activity and never asp/osp
-                String toActivity = preActivity.getName();
-                String intermediatePlace = HelperFunctions.getPlaceBetweenActivities(fromActivity, toActivity);
-                places.add(intermediatePlace);
-
-                if (postActivity.getType() == ActivityType.ACTIVITY) {
-                    flows.add(new Flow(fromActivity + HelperFunctions.END_SUFFIX, intermediatePlace));
-                } else if (postActivity.getType() == ActivityType.OR_SUBPROCESS) {
-                    flows.addAll(HelperFunctions.getFlowsFromOsp(modelStorage.getOrSubProcess(fromActivity), intermediatePlace));
-                }
-                flows.addAll(HelperFunctions.getFlowsToActivity(toActivity, intermediatePlace));
-            }
-        }
+        // the pre activity here is always of the type activity and never asp/osp
+        String toActivity = currentStatement.getPreActivities().get(0).getName();
+        handlePostAnd(toActivity, false);
     }
 
     @Override
     public void handlePreAndPostAnd() {
-        for (Activity postActivity : currentStatement.getPostActivities()) {
-            String fromActivity = postActivity.getName();
-            for (Activity preActivity : currentStatement.getPreActivities()) {
-                String toActivity = preActivity.getName();
-                String intermediatePlace = HelperFunctions.getPlaceBetweenActivities(fromActivity, toActivity);
-                places.add(intermediatePlace);
-
-                if (postActivity.getType() == ActivityType.ACTIVITY) {
-                    flows.add(new Flow(fromActivity + HelperFunctions.END_SUFFIX, intermediatePlace));
-                } else if (postActivity.getType() == ActivityType.OR_SUBPROCESS) {
-                    flows.addAll(HelperFunctions.getFlowsFromOsp(modelStorage.getOrSubProcess(fromActivity), intermediatePlace));
-                }
-
-                if (preActivity.getType() == ActivityType.ACTIVITY) {
-                    flows.addAll(HelperFunctions.getFlowsToActivity(toActivity, intermediatePlace));
-                } else if (preActivity.getType() == ActivityType.OR_SUBPROCESS) {
-                    List<Activity> toOsp = modelStorage.getOrSubProcess(toActivity);
-                    for (Activity activity : toOsp) {
-                        flows.addAll(HelperFunctions.getFlowsToActivity(activity.getName(), intermediatePlace));
-                    }
-                }
-            }
-        }
+//        String silentTransition = getSilentTransition(HelperFunctions.getChainedActivityNames(
+//                Stream.concat(currentStatement.getPreActivities().stream(), currentStatement.getPostActivities().stream()).toList()));
+        String silentTransition = getSilentTransition("pre_and_post_and");
+        handlePostAnd(silentTransition, true);
+        handlePreAnd(silentTransition, true);
     }
 
     @Override
     public void handlePreOrPostAnd() {
         for (Activity postActivity : currentStatement.getPostActivities()) {
             String fromActivity = postActivity.getName();
-            String xorPlace = HelperFunctions.getXorPlace(List.of(postActivity), currentStatement.getPreActivities());
+            String xorPlace = HelperFunctions.getIntermediatePlace(List.of(postActivity), currentStatement.getPreActivities());
             places.add(xorPlace);
 
             if (postActivity.getType() == ActivityType.ACTIVITY) {
@@ -181,38 +132,28 @@ public class MscGrammarPetriNetListener implements SentenceParser {
 
     @Override
     public void handlePreSequencePostOr() {
-        for (Activity preActivity : currentStatement.getPreActivities()) {
-            String toActivity = preActivity.getName();
-            String xorPlace = HelperFunctions.getXorPlace(currentStatement.getPostActivities(), List.of(preActivity));
-            places.add(xorPlace);
-            flows.addAll(HelperFunctions.getFlowsToActivity(toActivity, xorPlace));
+        Activity toActivity = currentStatement.getPreActivities().get(0);
+        String xorPlace = HelperFunctions.getIntermediatePlace(currentStatement.getPostActivities(), List.of(toActivity));
+        places.add(xorPlace);
+        flows.addAll(HelperFunctions.getFlowsToActivity(toActivity.getName(), xorPlace));
 
-            handlePostOr(xorPlace);
-        }
+        handlePostOr(xorPlace);
     }
 
     @Override
     public void handlePreAndPostOr() {
-        for (Activity preActivity : currentStatement.getPreActivities()) {
-            String toActivity = preActivity.getName();
-            String xorPlace = HelperFunctions.getXorPlace(currentStatement.getPostActivities(), List.of(preActivity));
-            places.add(xorPlace);
-            if (preActivity.getType() == ActivityType.ACTIVITY) {
-                flows.addAll(HelperFunctions.getFlowsToActivity(toActivity, xorPlace));
-            } else if (preActivity.getType() == ActivityType.OR_SUBPROCESS) {
-                List<Activity> toOsp = modelStorage.getOrSubProcess(toActivity);
-                for (Activity activity : toOsp) {
-                    flows.addAll(HelperFunctions.getFlowsToActivity(activity.getName(), xorPlace));
-                }
-            }
+        String silentTransition = getSilentTransition("pre_and_post_or");
+        String xorPlace = HelperFunctions.getIntermediatePlace(currentStatement.getPostActivities(), List.of(new Activity(silentTransition, ActivityType.ACTIVITY)));
+        places.add(xorPlace);
+        handlePostOr(xorPlace);
+        flows.add(new Flow(xorPlace, silentTransition));
 
-            handlePostOr(xorPlace);
-        }
+        handlePreAnd(silentTransition, true);
     }
 
     @Override
     public void handlePreOrPostOr() {
-        String xorPlace = HelperFunctions.getXorPlace(currentStatement.getPostActivities(), currentStatement.getPreActivities());
+        String xorPlace = HelperFunctions.getIntermediatePlace(currentStatement.getPostActivities(), currentStatement.getPreActivities());
         places.add(xorPlace);
 
         handlePostOr(xorPlace);
@@ -268,6 +209,37 @@ public class MscGrammarPetriNetListener implements SentenceParser {
             builder.append(" ");
         }
         return builder.toString().trim();
+    }
+
+    private void handlePreAnd(String fromActivity, boolean isSilentFromActivity) {
+        for (Activity preActivity : currentStatement.getPreActivities()) {
+            String toActivity = preActivity.getName();
+            String intermediatePlace = HelperFunctions.getPlaceBetweenActivities(fromActivity, toActivity);
+            places.add(intermediatePlace);
+
+            if (preActivity.getType() == ActivityType.ACTIVITY) {
+                flows.addAll(HelperFunctions.getFlowsBetweenActivities(fromActivity, toActivity, intermediatePlace, isSilentFromActivity));
+            } else if (preActivity.getType() == ActivityType.OR_SUBPROCESS) {
+                String flowFrom = isSilentFromActivity ? fromActivity : fromActivity + HelperFunctions.END_SUFFIX;
+                flows.add(new Flow(flowFrom, intermediatePlace));
+                flows.addAll(HelperFunctions.getFlowsBetweenActivityAndOsp(modelStorage.getOrSubProcess(toActivity), intermediatePlace));
+            }
+        }
+    }
+
+    private void handlePostAnd(String toActivity, boolean isSilentToActivity) {
+        for (Activity postActivity : currentStatement.getPostActivities()) {
+            String fromActivity = postActivity.getName();
+            String intermediatePlace = HelperFunctions.getPlaceBetweenActivities(fromActivity, toActivity);
+            places.add(intermediatePlace);
+
+            if (postActivity.getType() == ActivityType.ACTIVITY) {
+                flows.add(new Flow(fromActivity + HelperFunctions.END_SUFFIX, intermediatePlace));
+            } else if (postActivity.getType() == ActivityType.OR_SUBPROCESS) {
+                flows.addAll(HelperFunctions.getFlowsFromOsp(modelStorage.getOrSubProcess(fromActivity), intermediatePlace));
+            }
+            flows.addAll(HelperFunctions.getFlowsToActivityOrSilentTransition(toActivity, intermediatePlace, isSilentToActivity));
+        }
     }
 
     private void handlePostOr(String xorPlace) {

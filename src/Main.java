@@ -11,8 +11,7 @@ public class Main {
     public static final String FOLDER_PATH = "C:\\Users\\anton\\IdeaProjects\\MSc-Thesis\\src\\examples\\";
 
     public static void main(String[] args) throws Exception {
-        // String filePath = "C:\\Users\\Ana-Maria\\IdeaProjects\\MSc-Thesis\\src\\grammar.txt";
-        String fileName = "pre_or_post_and";
+        String fileName = "pre_and_post_or";
         String filePath = FOLDER_PATH + "input\\" + fileName + ".txt";
         CharStream input = new ANTLRInputStream(new FileInputStream(filePath));
         MScGrammarLexer lexer = new MScGrammarLexer(input);
