@@ -147,6 +147,16 @@ public interface MScGrammarListener extends ParseTreeListener {
 	 */
 	void exitOrPreActivityExpression(MScGrammarParser.OrPreActivityExpressionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MScGrammarParser#repeatSincePreActivityExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterRepeatSincePreActivityExpression(MScGrammarParser.RepeatSincePreActivityExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MScGrammarParser#repeatSincePreActivityExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitRepeatSincePreActivityExpression(MScGrammarParser.RepeatSincePreActivityExpressionContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MScGrammarParser#postActivityExpression}.
 	 * @param ctx the parse tree
 	 */

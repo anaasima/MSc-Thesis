@@ -184,6 +184,18 @@ public class MScGrammarBaseListener implements MScGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterRepeatSincePreActivityExpression(MScGrammarParser.RepeatSincePreActivityExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRepeatSincePreActivityExpression(MScGrammarParser.RepeatSincePreActivityExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterPostActivityExpression(MScGrammarParser.PostActivityExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}

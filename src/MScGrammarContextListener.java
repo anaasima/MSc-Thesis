@@ -62,6 +62,16 @@ public class MScGrammarContextListener implements MScGrammarListener {
     }
 
     @Override
+    public void enterRepeatSincePreActivityExpression(MScGrammarParser.RepeatSincePreActivityExpressionContext ctx) {
+        currentStatement.setPreActivityType(PreActivityType.IMMEDIATELY_REPEAT_SINCE);
+    }
+
+    @Override
+    public void exitRepeatSincePreActivityExpression(MScGrammarParser.RepeatSincePreActivityExpressionContext ctx) {
+        handleSequenceExpression(ctx.activity());
+    }
+
+    @Override
     public void enterPostActivityExpression(MScGrammarParser.PostActivityExpressionContext ctx) {
         currentStatement.setCurrentContextType(ContextType.POST_ACTIVITY);
     }
@@ -96,6 +106,7 @@ public class MScGrammarContextListener implements MScGrammarListener {
                 case IMMEDIATELY_SEQUENCE -> sentenceParser.handlePreSequencePostSequence();
                 case IMMEDIATELY_AND -> sentenceParser.handlePreAndPostSequence();
                 case IMMEDIATELY_OR -> sentenceParser.handlePreOrPostSequence();
+                case IMMEDIATELY_REPEAT_SINCE -> sentenceParser.handlePreRepeatSincePostSequence();
                 case EVENTUALLY_SEQUENCE -> sentenceParser.handePreEventuallyPostSequence();
                 default -> throw new IllegalStateException("Cannot handle " + currentStatement.getPreActivityType());
             }
@@ -104,6 +115,7 @@ public class MScGrammarContextListener implements MScGrammarListener {
                 case IMMEDIATELY_SEQUENCE -> sentenceParser.handlePreSequencePostAnd();
                 case IMMEDIATELY_AND -> sentenceParser.handlePreAndPostAnd();
                 case IMMEDIATELY_OR -> sentenceParser.handlePreOrPostAnd();
+                case IMMEDIATELY_REPEAT_SINCE -> sentenceParser.handlePreRepeatSincePostAnd();
                 case EVENTUALLY_SEQUENCE -> sentenceParser.handePreEventuallyPostAnd();
                 default -> throw new IllegalStateException("Cannot handle " + currentStatement.getPreActivityType());
             }
@@ -112,6 +124,7 @@ public class MScGrammarContextListener implements MScGrammarListener {
                 case IMMEDIATELY_SEQUENCE -> sentenceParser.handlePreSequencePostOr();
                 case IMMEDIATELY_AND -> sentenceParser.handlePreAndPostOr();
                 case IMMEDIATELY_OR -> sentenceParser.handlePreOrPostOr();
+                case IMMEDIATELY_REPEAT_SINCE -> sentenceParser.handlePreRepeatSincePostOr();
                 case EVENTUALLY_SEQUENCE -> sentenceParser.handePreEventuallyPostOr();
                 default -> throw new IllegalStateException("Cannot handle " + currentStatement.getPreActivityType());
             }

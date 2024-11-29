@@ -31,6 +31,12 @@ public interface SentenceParser {
     void handlePreAndPostSequence();
 
     /**
+     * After A ends, immediately repeat since B.
+     * same mapping as handlePreSequencePostSequence.
+     */
+    void handlePreRepeatSincePostSequence();
+
+    /**
      * After A ends, immediately either start B or start C or start (D_and_E).
      * Exactly1(A)
      * AlternatePrecedence(B,A)
@@ -94,6 +100,12 @@ public interface SentenceParser {
      * AlternatePrecedence(H,G_or_H)
      */
     void handlePreAndPostAnd();
+
+    /**
+     * After A ends and B ends and (D_or_E) ends, immediately repeat since C.
+     * same mapping as handlePreSequencePostAnd.
+     */
+    void handlePreRepeatSincePostAnd();
 
     /**
      * After A ends and B ends and (E_or_F) ends, immediately either start C or start D or start (G_and_H).
@@ -167,6 +179,12 @@ public interface SentenceParser {
      * AlternatePrecedence(H,G_or_H)
      */
     void handlePreAndPostOr();
+
+    /**
+     * After either A ends or B ends or (E_and_F) ends, immediately repeat since C.
+     * Same mapping as handlePreSequencePostOr.
+     */
+    void handlePreRepeatSincePostOr();
 
     /**
      * After either A ends or B ends or (E_and_F) ends, immediately either start C or start D or start (G_and_H).

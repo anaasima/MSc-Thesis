@@ -76,6 +76,21 @@ public class MscGrammarPetriNetListener implements SentenceParser {
     }
 
     @Override
+    public void handlePreRepeatSincePostSequence() {
+        String fromActivity = currentStatement.getPostActivities().get(0).getName();
+        String toActivity = currentStatement.getPreActivities().get(0).getName();
+
+        String silentTransition = getSilentTransition("repeat_since");
+        String intermediatePlace = HelperFunctions.getPlaceBetweenActivities(fromActivity, silentTransition);
+        places.add(intermediatePlace);
+
+        flows.add(new Flow(fromActivity + HelperFunctions.END_SUFFIX, intermediatePlace));
+        flows.add(new Flow(intermediatePlace, silentTransition));
+
+        handlePreRepeatSince(silentTransition, toActivity);
+    }
+
+    @Override
     public void handlePreOrPostSequence() {
         String xorPlace = HelperFunctions.getIntermediatePlace(currentStatement.getPostActivities(), currentStatement.getPreActivities());
         places.add(xorPlace);
@@ -107,6 +122,15 @@ public class MscGrammarPetriNetListener implements SentenceParser {
         String silentTransition = getSilentTransition("pre_and_post_and");
         handlePostAnd(silentTransition, true);
         handlePreAnd(silentTransition, true);
+    }
+
+    @Override
+    public void handlePreRepeatSincePostAnd() {
+        String toActivity = currentStatement.getPreActivities().get(0).getName();
+        String silentTransition = getSilentTransition("repeat_since");
+
+        handlePostAnd(silentTransition, true);
+        handlePreRepeatSince(silentTransition, toActivity);
     }
 
     @Override
@@ -149,6 +173,18 @@ public class MscGrammarPetriNetListener implements SentenceParser {
         flows.add(new Flow(xorPlace, silentTransition));
 
         handlePreAnd(silentTransition, true);
+    }
+
+    @Override
+    public void handlePreRepeatSincePostOr() {
+        String toActivity = currentStatement.getPreActivities().get(0).getName();
+        String silentTransition = getSilentTransition("repeat_since");
+        String xorPlace = HelperFunctions.getIntermediatePlace(currentStatement.getPostActivities(), List.of(new Activity(silentTransition, ActivityType.ACTIVITY)));
+        places.add(xorPlace);
+        flows.addAll(HelperFunctions.getFlowsToActivity(xorPlace, silentTransition));
+
+        handlePostOr(xorPlace);
+        handlePreRepeatSince(silentTransition, toActivity);
     }
 
     @Override
@@ -262,6 +298,18 @@ public class MscGrammarPetriNetListener implements SentenceParser {
                 handleAspInPreActivity(toActivity, xorPlace);
             }
         }
+    }
+
+    private void handlePreRepeatSince(String silentTransition, String toActivity) {
+        String loopStart = toActivity + HelperFunctions.START_SUFFIX;
+        Set<Flow> tempFlows = new HashSet<>();
+        flows.forEach(flow -> {
+            if (loopStart.equals(flow.getTo())) {
+                tempFlows.add(new Flow(silentTransition, flow.getFrom()));
+            }
+        });
+
+        flows.addAll(tempFlows);
     }
 
     private void handleAspInPreActivity(String toActivity, String xorPlace) {

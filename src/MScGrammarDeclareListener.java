@@ -70,6 +70,11 @@ public class MScGrammarDeclareListener implements SentenceParser {
     }
 
     @Override
+    public void handlePreRepeatSincePostSequence() {
+        handlePreSequencePostSequence();
+    }
+
+    @Override
     public void handlePreOrPostSequence() {
         String fromActivity = currentStatement.getPostActivities().get(0).getName();
         constraints.add(new DeclareConstraint(DeclareConstraintType.EXACTLY_ONE, fromActivity, null));
@@ -116,6 +121,11 @@ public class MScGrammarDeclareListener implements SentenceParser {
     }
 
     @Override
+    public void handlePreRepeatSincePostAnd() {
+        handlePreSequencePostAnd();
+    }
+
+    @Override
     public void handlePreOrPostAnd() {
         handlePostAndExactlyOne();
 
@@ -149,6 +159,11 @@ public class MScGrammarDeclareListener implements SentenceParser {
 
         handlePostOr(silentActivity);
         handlePreAnd(silentActivity, true);
+    }
+
+    @Override
+    public void handlePreRepeatSincePostOr() {
+        handlePreSequencePostOr();
     }
 
     @Override
