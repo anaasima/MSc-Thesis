@@ -2,4 +2,6 @@ public enum ActivityType {
     ACTIVITY,
     AND_SUBPROCESS,
     OR_SUBPROCESS,
+    REPEAT_SINCE_ACTIVITY,
+    SILENT_ACTIVITY
 }

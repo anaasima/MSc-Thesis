@@ -68,7 +68,15 @@ public class MScGrammarContextListener implements MScGrammarListener {
 
     @Override
     public void exitRepeatSincePreActivityExpression(MScGrammarParser.RepeatSincePreActivityExpressionContext ctx) {
-        handleSequenceExpression(ctx.activity());
+        currentStatement.addActivity(new Activity(HelperFunctions.getActivityText(ctx.activity(0).WORD()), ActivityType.REPEAT_SINCE_ACTIVITY));
+        if (ctx.activity().size() > 1) {
+            for (int i = 1; i < ctx.activity().size(); i++) {
+                handleSequenceExpression(ctx.activity(i));
+            }
+        }
+        for (int i = 0; i < ctx.aspId().size(); i++) {
+            currentStatement.addActivity(new Activity(HelperFunctions.getActivityText(ctx.aspId(i).WORD()), ActivityType.AND_SUBPROCESS));
+        }
     }
 
     @Override

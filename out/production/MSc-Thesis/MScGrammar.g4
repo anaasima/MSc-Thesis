@@ -22,7 +22,7 @@ osp
     : ospId ': ' activity ' or ' activity (' or ' activity)*? '.';
 
 immediatelyExpression
-    : 'immediately ' (sequencePreActivityExpression | andPreActivityExpression | orPreActivityExpression);
+    : 'immediately ' (sequencePreActivityExpression | andPreActivityExpression | orPreActivityExpression | repeatSincePreActivityExpression);
 eventuallyExpression
     : 'eventually ' sequencePreActivityExpression;
 
@@ -32,6 +32,8 @@ andPreActivityExpression
     : 'start ' (activity | ospId) ' and start ' (activity | ospId) (' and start ' (activity | ospId))*? ;
 orPreActivityExpression
     : 'either start ' (activity | aspId) ' or start ' (activity | aspId) (' or start ' (activity | aspId))*? ;
+repeatSincePreActivityExpression
+    : 'either repeat since ' activity ' or start ' (activity | aspId) (' or start ' (activity | aspId))*?;
 
 postActivityExpression
     : (sequencePostActivityExpression | andPostActivityExpression | orPostActivityExpression);

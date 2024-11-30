@@ -71,7 +71,7 @@ public class MScGrammarDeclareListener implements SentenceParser {
 
     @Override
     public void handlePreRepeatSincePostSequence() {
-        handlePreSequencePostSequence();
+        handlePreOrPostSequence();
     }
 
     @Override
@@ -122,7 +122,7 @@ public class MScGrammarDeclareListener implements SentenceParser {
 
     @Override
     public void handlePreRepeatSincePostAnd() {
-        handlePreSequencePostAnd();
+        handlePreOrPostAnd();
     }
 
     @Override
@@ -163,7 +163,7 @@ public class MScGrammarDeclareListener implements SentenceParser {
 
     @Override
     public void handlePreRepeatSincePostOr() {
-        handlePreSequencePostOr();
+        handlePreOrPostOr();
     }
 
     @Override
