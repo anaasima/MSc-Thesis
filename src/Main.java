@@ -11,7 +11,7 @@ public class Main {
     public static final String FOLDER_PATH = "C:\\Users\\anton\\IdeaProjects\\MSc-Thesis\\src\\examples\\";
 
     public static void main(String[] args) throws Exception {
-        String fileName = "pre_repeat_since_post_or";
+        String fileName = "example_1";
         String filePath = FOLDER_PATH + "input\\" + fileName + ".txt";
         CharStream input = new ANTLRInputStream(new FileInputStream(filePath));
         MScGrammarLexer lexer = new MScGrammarLexer(input);
