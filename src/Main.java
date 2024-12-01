@@ -8,10 +8,10 @@ import java.io.FileInputStream;
 import java.util.List;
 
 public class Main {
-    public static final String FOLDER_PATH = "C:\\Users\\anton\\IdeaProjects\\MSc-Thesis\\src\\examples\\";
+    public static final String FOLDER_PATH = "C:\\Users\\Ana-Maria\\IdeaProjects\\MSc-Thesis\\src\\examples\\";
 
     public static void main(String[] args) throws Exception {
-        String fileName = "example_1";
+        String fileName = "pre_or_post_sequence";
         String filePath = FOLDER_PATH + "input\\" + fileName + ".txt";
         CharStream input = new ANTLRInputStream(new FileInputStream(filePath));
         MScGrammarLexer lexer = new MScGrammarLexer(input);
@@ -21,8 +21,8 @@ public class Main {
         SentenceParser petriNetParser = new MscGrammarPetriNetListener();
         SentenceParser declareParser = new MScGrammarDeclareListener();
 
-        List<SentenceParser> parsers = List.of(petriNetParser);
-//        List<SentenceParser> parsers = List.of(declareParser);
+        //List<SentenceParser> parsers = List.of(petriNetParser);
+        List<SentenceParser> parsers = List.of(declareParser);
         for (SentenceParser sentenceParser : parsers) {
             sentenceParser.setInputFileName(fileName);
             MScGrammarListener listener = new MScGrammarContextListener(sentenceParser);

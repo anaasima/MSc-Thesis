@@ -1,3 +1,4 @@
+import org.antlr.v4.codegen.model.decl.Decl;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.ArrayList;
@@ -131,35 +132,27 @@ public class HelperFunctions {
         return flows;
     }
 
-    public static List<DeclareConstraint> getConstraintsForAspPreActivity(String aspId, List<String> aspActivities) {
+    public static List<DeclareConstraint> getConstraintsForAspPreActivity(String fromActivity, List<String> aspActivities) {
         List<DeclareConstraint> constraints = new ArrayList<>();
 
-        aspActivities.forEach(a -> constraints.add(new DeclareConstraint(DeclareConstraintType.ALTERNATE_SUCCESSION, aspId, a)));
+        aspActivities.forEach(a -> constraints.add(new DeclareConstraint(DeclareConstraintType.ALTERNATE_PRECEDENCE, fromActivity, a)));
 
         return constraints;
     }
 
-    public static List<DeclareConstraint> getConstraintsForAspPostActivity(String aspId, List<String> aspActivities) {
+    public static List<DeclareConstraint> getConstraintsForOspPreActivity(String fromActivity, List<String> ospActivities) {
         List<DeclareConstraint> constraints = new ArrayList<>();
 
-        aspActivities.forEach(a -> constraints.add(new DeclareConstraint(DeclareConstraintType.ALTERNATE_SUCCESSION, a, aspId)));
-
-        return constraints;
-    }
-
-    public static List<DeclareConstraint> getConstraintsForOspPreActivity(String ospId, List<String> ospActivities) {
-        List<DeclareConstraint> constraints = new ArrayList<>();
-
-        ospActivities.forEach(a -> constraints.add(new DeclareConstraint(DeclareConstraintType.ALTERNATE_PRECEDENCE, ospId, a)));
+        ospActivities.forEach(a -> constraints.add(new DeclareConstraint(DeclareConstraintType.ALTERNATE_PRECEDENCE, fromActivity, a)));
         constraints.addAll(getNotCoExistenceConstraintsForOr(ospActivities));
 
         return constraints;
     }
 
-    public static List<DeclareConstraint> getConstraintsForOspPostActivity(String ospId, List<String> ospActivities) {
+    public static List<DeclareConstraint> getConstraintsForOspPostActivity(String toActivity, List<String> ospActivities) {
         List<DeclareConstraint> constraints = new ArrayList<>();
 
-        ospActivities.forEach(a -> constraints.add(new DeclareConstraint(DeclareConstraintType.ALTERNATE_RESPONSE, a, ospId)));
+        ospActivities.forEach(a -> constraints.add(new DeclareConstraint(DeclareConstraintType.ALTERNATE_RESPONSE, a, toActivity)));
         constraints.addAll(getNotCoExistenceConstraintsForOr(ospActivities));
 
         return constraints;
@@ -171,6 +164,18 @@ public class HelperFunctions {
         for (int i = 0; i < orActivities.size() - 1; i++) {
             for (int j = i + 1; j < orActivities.size(); j++) {
                 constraints.add(new DeclareConstraint(DeclareConstraintType.NOT_COEXISTENCE, orActivities.get(i), orActivities.get(j)));
+            }
+        }
+
+        return constraints;
+    }
+
+    public static List<DeclareConstraint> getCoExistenceConstraintsForAnd(List<String> andActivities) {
+        List<DeclareConstraint> constraints = new ArrayList<>();
+
+        for (int i = 0; i < andActivities.size() - 1; i++) {
+            for (int j = i + 1; j < andActivities.size(); j++) {
+                constraints.add(new DeclareConstraint(DeclareConstraintType.COEXISTENCE, andActivities.get(i), andActivities.get(j)));
             }
         }
 

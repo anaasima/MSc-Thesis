@@ -3,9 +3,8 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class MScGrammarDeclareListener implements SentenceParser {
     private final Set<DeclareConstraint> constraints = new HashSet<>();
@@ -13,6 +12,8 @@ public class MScGrammarDeclareListener implements SentenceParser {
     private String inputFileName;
     private StatementMetadata currentStatement;
     private final SharedModelStorage modelStorage;
+    private Map<String, Set<String>> activitiesToXORs = new HashMap<>();
+    private Map<String, String> xorTagToActivities = new HashMap<>();
 
     public MScGrammarDeclareListener() {
         modelStorage = SharedModelStorage.getInstance();
@@ -45,12 +46,12 @@ public class MScGrammarDeclareListener implements SentenceParser {
 
     @Override
     public void handleAspDeclaration(String aspId) {
-        modelStorage.addTransition(aspId);
+        // we're not using silent transitions in declare
     }
 
     @Override
     public void handleOspDeclaration(String ospId) {
-        modelStorage.addTransition(ospId);
+        // we're not using silent transitions in declare
     }
 
     @Override
@@ -59,6 +60,14 @@ public class MScGrammarDeclareListener implements SentenceParser {
         String toActivity = currentStatement.getPreActivities().get(0).getName();
 
         constraints.add(new DeclareConstraint(DeclareConstraintType.CHAIN_SUCCESSION, fromActivity, toActivity));
+        if (activitiesToXORs.containsKey(fromActivity)) {
+            if (activitiesToXORs.containsKey(toActivity)) {
+                activitiesToXORs.get(toActivity).addAll(activitiesToXORs.get(fromActivity));
+            } else {
+                activitiesToXORs.put(toActivity, activitiesToXORs.get(fromActivity));
+            }
+            activitiesToXORs.remove(fromActivity);
+        }
     }
 
     @Override
@@ -66,7 +75,7 @@ public class MScGrammarDeclareListener implements SentenceParser {
         String fromActivity = currentStatement.getPostActivities().get(0).getName();
         constraints.add(new DeclareConstraint(DeclareConstraintType.EXACTLY_ONE, fromActivity, null));
 
-        handlePreAnd(fromActivity, false);
+        handlePreAnd(fromActivity);
     }
 
     @Override
@@ -92,32 +101,23 @@ public class MScGrammarDeclareListener implements SentenceParser {
 
     @Override
     public void handlePreSequencePostAnd() {
-        handlePostAndExactlyOne();
-
-        for (Activity preActivity: currentStatement.getPreActivities()) {
+        for (Activity preActivity : currentStatement.getPreActivities()) {
             String toActivity = preActivity.getName();
             for (Activity postActivity : currentStatement.getPostActivities()) {
                 String fromActivity = postActivity.getName();
-                constraints.add(new DeclareConstraint(DeclareConstraintType.ALTERNATE_SUCCESSION, fromActivity, toActivity));
+                if (postActivity.getType() == ActivityType.ACTIVITY) {
+                    constraints.add(new DeclareConstraint(DeclareConstraintType.ALTERNATE_SUCCESSION, fromActivity, toActivity));
+                } else if (postActivity.getType() == ActivityType.OR_SUBPROCESS) {
+                    constraints.addAll(HelperFunctions.getConstraintsForOspPostActivity(toActivity, modelStorage.getOrSubProcessNames(fromActivity)));
+
+                }
             }
         }
     }
 
     @Override
     public void handlePreAndPostAnd() {
-        handlePostAndExactlyOne();
-
-        for (Activity preActivity: currentStatement.getPreActivities()) {
-            String toActivity = preActivity.getName();
-            if (preActivity.getType() == ActivityType.OR_SUBPROCESS) {
-                constraints.add(new DeclareConstraint(DeclareConstraintType.EXACTLY_ONE, toActivity, null));
-                constraints.addAll(HelperFunctions.getConstraintsForOspPreActivity(toActivity, modelStorage.getOrSubProcessNames(toActivity)));
-            }
-            for (Activity postActivity : currentStatement.getPostActivities()) {
-                String fromActivity = postActivity.getName();
-                constraints.add(new DeclareConstraint(DeclareConstraintType.ALTERNATE_SUCCESSION, fromActivity, toActivity));
-            }
-        }
+        // not going to implement anymore
     }
 
     @Override
@@ -127,12 +127,7 @@ public class MScGrammarDeclareListener implements SentenceParser {
 
     @Override
     public void handlePreOrPostAnd() {
-        handlePostAndExactlyOne();
-
-        String silentActivity = getSilentTransition("and_to_or");
-        currentStatement.getPostActivities().forEach(a -> constraints.add(new DeclareConstraint(DeclareConstraintType.ALTERNATE_SUCCESSION, a.getName(), silentActivity)));
-
-        handlePreOr(silentActivity);
+        // not going to implement anymore
     }
 
     @Override
@@ -155,10 +150,7 @@ public class MScGrammarDeclareListener implements SentenceParser {
 
     @Override
     public void handlePreAndPostOr() {
-        String silentActivity = getSilentTransition("or_to_and");
-
-        handlePostOr(silentActivity);
-        handlePreAnd(silentActivity, true);
+        // not going to implement anymore
     }
 
     @Override
@@ -168,10 +160,7 @@ public class MScGrammarDeclareListener implements SentenceParser {
 
     @Override
     public void handlePreOrPostOr() {
-        String silentActivity = getSilentTransition("or_to_or");
-
-        handlePostOr(silentActivity);
-        handlePreOr(silentActivity);
+        // not going to implement anymore
     }
 
     @Override
@@ -191,11 +180,11 @@ public class MScGrammarDeclareListener implements SentenceParser {
             throw new RuntimeException(e);
         }
 
-        for (String activity: modelStorage.getTransitions()) {
+        for (String activity : modelStorage.getTransitions()) {
             printWriter.printf("activity %s\n", activity);
         }
 
-        for (DeclareConstraint constraint: constraints) {
+        for (DeclareConstraint constraint : constraints) {
             printWriter.printf("%s\n", constraint.getRumString());
         }
 
@@ -208,49 +197,122 @@ public class MScGrammarDeclareListener implements SentenceParser {
         return silentActivity;
     }
 
-    private void handlePreAnd(String fromActivity, boolean addExactlyOneForOr) {
-        for (Activity preActivity: currentStatement.getPreActivities()) {
+    private void handlePreAnd(String fromActivity) {
+        List<String> andActivities = new ArrayList<>(); // here we'll store all single pre activities. This means all except the OR subprocess
+
+        for (Activity preActivity : currentStatement.getPreActivities()) {
             String toActivity = preActivity.getName();
-            constraints.add(new DeclareConstraint(DeclareConstraintType.ALTERNATE_SUCCESSION, fromActivity, toActivity));
-            if (preActivity.getType() == ActivityType.OR_SUBPROCESS) {
-                if (addExactlyOneForOr) {
-                    constraints.add(new DeclareConstraint(DeclareConstraintType.EXACTLY_ONE, toActivity, null));
-                }
-                constraints.addAll(HelperFunctions.getConstraintsForOspPreActivity(toActivity, modelStorage.getOrSubProcessNames(toActivity)));
+            if (preActivity.getType() == ActivityType.ACTIVITY) {
+                constraints.add(new DeclareConstraint(DeclareConstraintType.ALTERNATE_SUCCESSION, fromActivity, toActivity));
+                andActivities.add(toActivity);
+            } else if (preActivity.getType() == ActivityType.OR_SUBPROCESS) {
+                constraints.addAll(HelperFunctions.getConstraintsForOspPreActivity(fromActivity, modelStorage.getOrSubProcessNames(toActivity)));
             }
         }
+
+        constraints.addAll(HelperFunctions.getCoExistenceConstraintsForAnd(andActivities));
     }
 
+    // XOR split
     private void handlePreOr(String previousActivity) {
-        constraints.addAll(HelperFunctions.getNotCoExistenceConstraintsForOr(currentStatement.getPreActivities().stream().map(Activity::getName).toList()));
-        for (Activity preActivity: currentStatement.getPreActivities()) {
+        String xorTag = "xor_" + currentStatement.getStatementNumber();
+        xorTagToActivities.put(xorTag, previousActivity);
+
+        List<String> orBranchesAndOneRepresentativeForEachAndBranch = currentStatement.getPreActivities()
+                .stream()
+                .filter(a -> a.getType() == ActivityType.ACTIVITY)
+                .map(Activity::getName).collect(Collectors.toList());
+        currentStatement.getPreActivities().forEach(a -> {
+            if (a.getType() == ActivityType.AND_SUBPROCESS) {
+                List<String> andSubBranches = new ArrayList<>(modelStorage.getAndSubProcessNames(a.getName()));
+                orBranchesAndOneRepresentativeForEachAndBranch.add(andSubBranches.get(0)); // we only need one branch from all that are part of the AND group
+                constraints.addAll(HelperFunctions.getCoExistenceConstraintsForAnd(andSubBranches));
+            }
+        });
+
+        constraints.addAll(HelperFunctions.getNotCoExistenceConstraintsForOr(orBranchesAndOneRepresentativeForEachAndBranch));
+
+        for (Activity preActivity : currentStatement.getPreActivities()) {
             String toActivity = preActivity.getName();
-            constraints.add(new DeclareConstraint(DeclareConstraintType.ALTERNATE_PRECEDENCE, previousActivity, toActivity));
-            if (preActivity.getType() == ActivityType.AND_SUBPROCESS) {
-                constraints.addAll(HelperFunctions.getConstraintsForAspPreActivity(toActivity, modelStorage.getAndSubProcessNames(toActivity)));
+
+            if (activitiesToXORs.containsKey(toActivity)) {
+                activitiesToXORs.get(toActivity).add(xorTag);
+            } else {
+                activitiesToXORs.put(toActivity, Set.of(xorTag));
+            }
+
+            if (preActivity.getType() == ActivityType.ACTIVITY) {
+                constraints.add(new DeclareConstraint(DeclareConstraintType.ALTERNATE_PRECEDENCE, previousActivity, toActivity));
+            } else if (preActivity.getType() == ActivityType.AND_SUBPROCESS) {
+                constraints.addAll(HelperFunctions.getConstraintsForAspPreActivity(previousActivity, modelStorage.getAndSubProcessNames(toActivity)));
             }
         }
     }
 
+    // XOR join
     private void handlePostOr(String nextActivity) {
         constraints.add(new DeclareConstraint(DeclareConstraintType.EXACTLY_ONE, nextActivity, null));
 
-        constraints.addAll(HelperFunctions.getNotCoExistenceConstraintsForOr(currentStatement.getPostActivities().stream().map(Activity::getName).toList()));
-        for (Activity postActivity : currentStatement.getPostActivities()) {
-            String fromActivity = postActivity.getName();
-            constraints.add(new DeclareConstraint(DeclareConstraintType.ALTERNATE_RESPONSE, fromActivity, nextActivity));
-            if (postActivity.getType() == ActivityType.AND_SUBPROCESS) {
-                constraints.addAll(HelperFunctions.getConstraintsForAspPostActivity(fromActivity, modelStorage.getAndSubProcessNames(fromActivity)));
+        String activityWithTag = currentStatement.getPostActivities().stream().filter(a -> activitiesToXORs.containsKey(a.getName())).findFirst().orElseThrow().getName();
+        List<String> xorTagsToRemove = new ArrayList<>();
+        for (String xorTag : activitiesToXORs.get(activityWithTag)) {
+            boolean isTagUsedByAllPostActivities = currentStatement.getPostActivities().stream().allMatch(a ->
+                    activitiesToXORs.containsKey(a.getName()) && activitiesToXORs.get(a.getName()).contains(xorTag));
+
+            if (isTagUsedByAllPostActivities) {
+                int numberOfActivitiesWithTag = (int) activitiesToXORs.entrySet().stream().filter(keyValue -> keyValue.getValue().contains(xorTag)).count();
+                boolean setOfPostActivitiesIsEqualToSetOfActivitiesWithTag = numberOfActivitiesWithTag == currentStatement.getPostActivities().size();
+                if (setOfPostActivitiesIsEqualToSetOfActivitiesWithTag) {
+                    // if we are here, then all post activities have the current xor tag and the xor tag is only used by the post activities and no other activities
+                    String tagStartActivity = xorTagToActivities.get(xorTag);
+                    constraints.add(new DeclareConstraint(DeclareConstraintType.NOT_CHAIN_SUCCESSION, tagStartActivity, nextActivity));
+                    constraints.add(new DeclareConstraint(DeclareConstraintType.NOT_CHAIN_SUCCESSION, nextActivity, tagStartActivity));
+
+                    // cleanup
+                    xorTagToActivities.remove(xorTag);
+                    xorTagsToRemove.add(xorTag);
+                }
             }
         }
+
+        for (Map.Entry<String, Set<String>> activityToXOR : activitiesToXORs.entrySet()) {
+            Set<String> newXors = activityToXOR.getValue().stream().filter(xor -> !xorTagsToRemove.contains(xor)).collect(Collectors.toSet());
+            activityToXOR.setValue(newXors);
+        }
+
+        List<String> orBranchesAndRepresentativesForAndBranches = new ArrayList<>();
+        orBranchesAndRepresentativesForAndBranches = currentStatement.getPostActivities()
+                .stream()
+                .filter(a -> a.getType() == ActivityType.ACTIVITY)
+                .map(Activity::getName)
+                .collect(Collectors.toList());
+        for (Activity a : currentStatement.getPostActivities()) {
+            if (a.getType() == ActivityType.ACTIVITY) {
+                String fromActivity = a.getName();
+                constraints.add(new DeclareConstraint(DeclareConstraintType.ALTERNATE_RESPONSE, fromActivity, nextActivity));
+            } else if (a.getType() == ActivityType.AND_SUBPROCESS) {
+                List<String> subProcessNames = modelStorage.getAndSubProcessNames(a.getName());
+                subProcessNames.forEach(fromActivity -> constraints.add(new DeclareConstraint(DeclareConstraintType.ALTERNATE_RESPONSE, fromActivity, nextActivity)));
+                constraints.addAll(HelperFunctions.getCoExistenceConstraintsForAnd(subProcessNames));
+                orBranchesAndRepresentativesForAndBranches.add(subProcessNames.getFirst());
+            }
+        }
+        constraints.addAll(HelperFunctions.getNotCoExistenceConstraintsForOr(orBranchesAndRepresentativesForAndBranches));
     }
 
+
     private void handlePostAndExactlyOne() {
-        currentStatement.getPostActivities().forEach(a -> {
-            constraints.add(new DeclareConstraint(DeclareConstraintType.EXACTLY_ONE, a.getName(), null));
-            if (a.getType() == ActivityType.OR_SUBPROCESS) {
-                constraints.addAll(HelperFunctions.getConstraintsForOspPostActivity(a.getName(), modelStorage.getOrSubProcessNames(a.getName())));
+        for (Activity a : currentStatement.getPostActivities()) {
+            if (a.getType() == ActivityType.ACTIVITY) {
+                constraints.add(new DeclareConstraint(DeclareConstraintType.EXACTLY_ONE, a.getName(), null));
+                return;
             }
-        });
+        }
+//        currentStatement.getPostActivities().forEach(a -> {
+//            constraints.add(new DeclareConstraint(DeclareConstraintType.EXACTLY_ONE, a.getName(), null));
+//            if (a.getType() == ActivityType.OR_SUBPROCESS) {
+//                constraints.addAll(HelperFunctions.getConstraintsForOspPostActivity(a.getName(), modelStorage.getOrSubProcessNames(a.getName())));
+//            }
+//        });
     }
 }

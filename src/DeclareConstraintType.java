@@ -10,6 +10,7 @@ public enum DeclareConstraintType {
     ALTERNATE_RESPONSE("Alternate Response", 3),
     ALTERNATE_PRECEDENCE("Alternate Precedence", 3),
     SUCCESSION("Succession", 3),
+    NOT_CHAIN_SUCCESSION("Not Chain Succession", 3),
     ;
 
     private String rumName;
