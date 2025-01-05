@@ -37,16 +37,6 @@ public interface MScGrammarListener extends ParseTreeListener {
 	 */
 	void exitInitialStatement(MScGrammarParser.InitialStatementContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MScGrammarParser#closingStatement}.
-	 * @param ctx the parse tree
-	 */
-	void enterClosingStatement(MScGrammarParser.ClosingStatementContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MScGrammarParser#closingStatement}.
-	 * @param ctx the parse tree
-	 */
-	void exitClosingStatement(MScGrammarParser.ClosingStatementContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MScGrammarParser#statementList}.
 	 * @param ctx the parse tree
 	 */
@@ -66,6 +56,16 @@ public interface MScGrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitStatement(MScGrammarParser.StatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MScGrammarParser#closingStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterClosingStatement(MScGrammarParser.ClosingStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MScGrammarParser#closingStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitClosingStatement(MScGrammarParser.ClosingStatementContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MScGrammarParser#afterStatement}.
 	 * @param ctx the parse tree

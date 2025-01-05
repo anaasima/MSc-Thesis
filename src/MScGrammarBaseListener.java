@@ -52,18 +52,6 @@ public class MScGrammarBaseListener implements MScGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterClosingStatement(MScGrammarParser.ClosingStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitClosingStatement(MScGrammarParser.ClosingStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterStatementList(MScGrammarParser.StatementListContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -83,6 +71,18 @@ public class MScGrammarBaseListener implements MScGrammarListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitStatement(MScGrammarParser.StatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterClosingStatement(MScGrammarParser.ClosingStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitClosingStatement(MScGrammarParser.ClosingStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

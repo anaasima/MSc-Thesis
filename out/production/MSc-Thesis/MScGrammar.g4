@@ -1,18 +1,18 @@
 grammar MScGrammar ;
 description
-    : leadingStatement initialStatement (statementList)? closingStatement;
+    : leadingStatement initialStatement statementList;
 
 leadingStatement
     : 'The following textual description follows the closed-world assumption, meaning that only the activities specified can be executed in the specified order. Any possible activity and execution that is not specified is considered impossible.' (NEWLINE)*;
 initialStatement
     : 'Initially start ' activity '.' (NEWLINE)*;
-closingStatement
-    : 'After ' activity ' ends, the process finishes.' ;
 
 statementList
     : statement (statement)*?;
 statement
-    : (afterStatement | asp | osp) (NEWLINE)*;
+    : (afterStatement | closingStatement | asp | osp) (NEWLINE)*;
+closingStatement
+    : 'After ' postActivityExpression ', the process finishes.' ;
 
 afterStatement
     : 'After ' postActivityExpression ', ' (immediatelyExpression | eventuallyExpression) '.';
@@ -47,12 +47,12 @@ orPostActivityExpression
 
 activity
     : '"' WORD (SPACE WORD)*? '"' ;
-aspId // asp = and subprocess
+aspId
     : '(' WORD (SPACE WORD)*? ')' ;
-ospId // osp = or subprocess
+ospId
     : '(' WORD (SPACE WORD)*? ')' ;
 WORD
-    : [a-zA-Z0-9]+ ;// a sequence of alphabetic characters
+    : [a-zA-Z0-9]+ ;
 SPACE
     : ' ' | '_' ;
 NEWLINE

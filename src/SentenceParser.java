@@ -7,7 +7,9 @@ public interface SentenceParser {
     void setStatementMetadata(StatementMetadata statementMetadata);
 
     void handleInitialStatement(List<TerminalNode> initialTransition);
-    void handleClosingStatement(List<TerminalNode> closingTransition);
+    void handleClosingStatementSequence();
+    void handleClosingStatementAnd();
+    void handleClosingStatementOr();
     void handleActivity(List<TerminalNode> activityText);
     void handleAspDeclaration(String aspId);
     void handleOspDeclaration(String ospId);

@@ -17,8 +17,22 @@ public class MScGrammarContextListener implements MScGrammarListener {
     }
 
     @Override
+    public void enterClosingStatement(MScGrammarParser.ClosingStatementContext ctx) {
+        currentStatement.setStatementType(StatementType.CLOSING);
+    }
+
+    @Override
     public void exitClosingStatement(MScGrammarParser.ClosingStatementContext ctx) {
-        sentenceParser.handleClosingStatement(ctx.activity().WORD());
+        sentenceParser.setStatementMetadata(currentStatement);
+        if (currentStatement.getPostActivityType() == PostActivityType.SEQUENCE) {
+            sentenceParser.handleClosingStatementSequence();
+        } else if (currentStatement.getPostActivityType() == PostActivityType.AND) {
+            sentenceParser.handleClosingStatementAnd();
+        } else if (currentStatement.getPostActivityType() == PostActivityType.OR) {
+            sentenceParser.handleClosingStatementOr();
+        } else {
+            throw new IllegalStateException("Cannot handle " + currentStatement.getPostActivityType());
+        }
     }
 
     @Override
@@ -290,7 +304,4 @@ public class MScGrammarContextListener implements MScGrammarListener {
 
     @Override
     public void enterInitialStatement(MScGrammarParser.InitialStatementContext ctx) { }
-
-    @Override
-    public void enterClosingStatement(MScGrammarParser.ClosingStatementContext ctx) { }
 }

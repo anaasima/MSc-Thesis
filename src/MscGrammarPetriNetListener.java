@@ -42,8 +42,21 @@ public class MscGrammarPetriNetListener implements SentenceParser {
     }
 
     @Override
-    public void handleClosingStatement(List<TerminalNode> closingTransition) {
-        flows.add(new Flow(HelperFunctions.getActivityTextEnd(closingTransition), FINAL_PLACE));
+    public void handleClosingStatementSequence() {
+        String closingTransition = currentStatement.getPostActivities().get(0).getName();
+        flows.add(new Flow(closingTransition + HelperFunctions.END_SUFFIX, FINAL_PLACE));
+    }
+
+    @Override
+    public void handleClosingStatementAnd() {
+        String silentTransition = getSilentTransition("closing_and");
+        handlePostAnd(silentTransition, true);
+        flows.add(new Flow(silentTransition, FINAL_PLACE));
+    }
+
+    @Override
+    public void handleClosingStatementOr() {
+        handlePostOr(FINAL_PLACE);
     }
 
     @Override

@@ -35,9 +35,13 @@ public class MScGrammarDeclareListener implements SentenceParser {
     }
 
     @Override
-    public void handleClosingStatement(List<TerminalNode> closingTransition) {
+    public void handleClosingStatementSequence() { }
 
-    }
+    @Override
+    public void handleClosingStatementAnd() { }
+
+    @Override
+    public void handleClosingStatementOr() { }
 
     @Override
     public void handleActivity(List<TerminalNode> activityText) {
@@ -60,14 +64,7 @@ public class MScGrammarDeclareListener implements SentenceParser {
         String toActivity = currentStatement.getPreActivities().get(0).getName();
 
         constraints.add(new DeclareConstraint(DeclareConstraintType.CHAIN_SUCCESSION, fromActivity, toActivity));
-        if (activitiesToXORs.containsKey(fromActivity)) {
-            if (activitiesToXORs.containsKey(toActivity)) {
-                activitiesToXORs.get(toActivity).addAll(activitiesToXORs.get(fromActivity));
-            } else {
-                activitiesToXORs.put(toActivity, activitiesToXORs.get(fromActivity));
-            }
-            activitiesToXORs.remove(fromActivity);
-        }
+        transferTagsToNextActivity(fromActivity, toActivity);
     }
 
     @Override
@@ -109,7 +106,6 @@ public class MScGrammarDeclareListener implements SentenceParser {
                     constraints.add(new DeclareConstraint(DeclareConstraintType.ALTERNATE_SUCCESSION, fromActivity, toActivity));
                 } else if (postActivity.getType() == ActivityType.OR_SUBPROCESS) {
                     constraints.addAll(HelperFunctions.getConstraintsForOspPostActivity(toActivity, modelStorage.getOrSubProcessNames(fromActivity)));
-
                 }
             }
         }
@@ -189,12 +185,6 @@ public class MScGrammarDeclareListener implements SentenceParser {
         }
 
         printWriter.close();
-    }
-
-    private String getSilentTransition(String name) {
-        String silentActivity = HelperFunctions.getSilentTransitionName(name, currentStatement.getStatementNumber());
-        modelStorage.addTransition(silentActivity);
-        return silentActivity;
     }
 
     private void handlePreAnd(String fromActivity) {
@@ -300,6 +290,24 @@ public class MScGrammarDeclareListener implements SentenceParser {
         constraints.addAll(HelperFunctions.getNotCoExistenceConstraintsForOr(orBranchesAndRepresentativesForAndBranches));
     }
 
+    private void transferTagsToNextActivity(String fromActivity, String toActivity) {
+        if (activitiesToXORs.containsKey(fromActivity)) {
+            if (activitiesToXORs.containsKey(toActivity)) {
+                activitiesToXORs.get(toActivity).addAll(activitiesToXORs.get(fromActivity));
+            } else {
+                activitiesToXORs.put(toActivity, activitiesToXORs.get(fromActivity));
+            }
+            activitiesToXORs.remove(fromActivity);
+        }
+    }
+
+    private void transferTagsToAllActivities() {
+        String fromActivity = currentStatement.getPostActivities().get(0).getName();
+        for (Activity preActivity : currentStatement.getPreActivities()) {
+            String toActivity = preActivity.getName();
+            transferTagsToNextActivity(fromActivity, toActivity);
+        }
+    }
 
     private void handlePostAndExactlyOne() {
         for (Activity a : currentStatement.getPostActivities()) {
@@ -308,11 +316,5 @@ public class MScGrammarDeclareListener implements SentenceParser {
                 return;
             }
         }
-//        currentStatement.getPostActivities().forEach(a -> {
-//            constraints.add(new DeclareConstraint(DeclareConstraintType.EXACTLY_ONE, a.getName(), null));
-//            if (a.getType() == ActivityType.OR_SUBPROCESS) {
-//                constraints.addAll(HelperFunctions.getConstraintsForOspPostActivity(a.getName(), modelStorage.getOrSubProcessNames(a.getName())));
-//            }
-//        });
     }
 }
