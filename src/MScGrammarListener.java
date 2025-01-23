@@ -27,16 +27,6 @@ public interface MScGrammarListener extends ParseTreeListener {
 	 */
 	void exitLeadingStatement(MScGrammarParser.LeadingStatementContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MScGrammarParser#initialStatement}.
-	 * @param ctx the parse tree
-	 */
-	void enterInitialStatement(MScGrammarParser.InitialStatementContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MScGrammarParser#initialStatement}.
-	 * @param ctx the parse tree
-	 */
-	void exitInitialStatement(MScGrammarParser.InitialStatementContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MScGrammarParser#statementList}.
 	 * @param ctx the parse tree
 	 */
@@ -46,6 +36,16 @@ public interface MScGrammarListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitStatementList(MScGrammarParser.StatementListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MScGrammarParser#initialStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterInitialStatement(MScGrammarParser.InitialStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MScGrammarParser#initialStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitInitialStatement(MScGrammarParser.InitialStatementContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MScGrammarParser#statement}.
 	 * @param ctx the parse tree
@@ -157,15 +157,15 @@ public interface MScGrammarListener extends ParseTreeListener {
 	 */
 	void exitRepeatSincePreActivityExpression(MScGrammarParser.RepeatSincePreActivityExpressionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MScGrammarParser#postActivityExpression}.
+	 * Enter a parse tree produced by {@link MScGrammarParser#endActivityExpression}.
 	 * @param ctx the parse tree
 	 */
-	void enterPostActivityExpression(MScGrammarParser.PostActivityExpressionContext ctx);
+	void enterEndActivityExpression(MScGrammarParser.EndActivityExpressionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MScGrammarParser#postActivityExpression}.
+	 * Exit a parse tree produced by {@link MScGrammarParser#endActivityExpression}.
 	 * @param ctx the parse tree
 	 */
-	void exitPostActivityExpression(MScGrammarParser.PostActivityExpressionContext ctx);
+	void exitEndActivityExpression(MScGrammarParser.EndActivityExpressionContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MScGrammarParser#sequencePostActivityExpression}.
 	 * @param ctx the parse tree

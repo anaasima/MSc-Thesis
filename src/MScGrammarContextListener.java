@@ -94,7 +94,7 @@ public class MScGrammarContextListener implements MScGrammarListener {
     }
 
     @Override
-    public void enterPostActivityExpression(MScGrammarParser.PostActivityExpressionContext ctx) {
+    public void enterEndActivityExpression(MScGrammarParser.EndActivityExpressionContext ctx) {
         currentStatement.setCurrentContextType(ContextType.POST_ACTIVITY);
     }
 
@@ -291,7 +291,7 @@ public class MScGrammarContextListener implements MScGrammarListener {
     public void visitTerminal(TerminalNode terminalNode) { }
 
     @Override
-    public void exitPostActivityExpression(MScGrammarParser.PostActivityExpressionContext ctx) { }
+    public void exitEndActivityExpression(MScGrammarParser.EndActivityExpressionContext ctx) { }
 
     @Override
     public void exitEventuallyExpression(MScGrammarParser.EventuallyExpressionContext ctx) { }

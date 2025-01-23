@@ -40,18 +40,6 @@ public class MScGrammarBaseListener implements MScGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterInitialStatement(MScGrammarParser.InitialStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitInitialStatement(MScGrammarParser.InitialStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterStatementList(MScGrammarParser.StatementListContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -59,6 +47,18 @@ public class MScGrammarBaseListener implements MScGrammarListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitStatementList(MScGrammarParser.StatementListContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterInitialStatement(MScGrammarParser.InitialStatementContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitInitialStatement(MScGrammarParser.InitialStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -196,13 +196,13 @@ public class MScGrammarBaseListener implements MScGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPostActivityExpression(MScGrammarParser.PostActivityExpressionContext ctx) { }
+	@Override public void enterEndActivityExpression(MScGrammarParser.EndActivityExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPostActivityExpression(MScGrammarParser.PostActivityExpressionContext ctx) { }
+	@Override public void exitEndActivityExpression(MScGrammarParser.EndActivityExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
