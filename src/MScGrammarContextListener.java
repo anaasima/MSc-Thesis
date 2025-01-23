@@ -36,60 +36,60 @@ public class MScGrammarContextListener implements MScGrammarListener {
     }
 
     @Override
-    public void enterAndPostActivityExpression(MScGrammarParser.AndPostActivityExpressionContext ctx) {
+    public void enterAndEndActivityExpression(MScGrammarParser.AndEndActivityExpressionContext ctx) {
         currentStatement.setPostActivityType(PostActivityType.AND);
     }
 
     @Override
-    public void exitAndPostActivityExpression(MScGrammarParser.AndPostActivityExpressionContext ctx) {
-        handleAndExpression(ctx.activity(), ctx.ospId());
+    public void exitAndEndActivityExpression(MScGrammarParser.AndEndActivityExpressionContext ctx) {
+        handleAndExpression(ctx.activity(), ctx.orSubProcessId());
     }
 
     @Override
-    public void enterAndPreActivityExpression(MScGrammarParser.AndPreActivityExpressionContext ctx) {
+    public void enterAndStartActivityExpression(MScGrammarParser.AndStartActivityExpressionContext ctx) {
         currentStatement.setPreActivityType(PreActivityType.IMMEDIATELY_AND);
     }
 
     @Override
-    public void exitAndPreActivityExpression(MScGrammarParser.AndPreActivityExpressionContext ctx) {
-        handleAndExpression(ctx.activity(), ctx.ospId());
+    public void exitAndStartActivityExpression(MScGrammarParser.AndStartActivityExpressionContext ctx) {
+        handleAndExpression(ctx.activity(), ctx.orSubProcessId());
     }
 
     @Override
-    public void enterOrPostActivityExpression(MScGrammarParser.OrPostActivityExpressionContext ctx) {
+    public void enterOrEndActivityExpression(MScGrammarParser.OrEndActivityExpressionContext ctx) {
         currentStatement.setPostActivityType(PostActivityType.OR);
     }
 
     @Override
-    public void exitOrPostActivityExpression(MScGrammarParser.OrPostActivityExpressionContext ctx) {
-        handleOrExpression(ctx.activity(), ctx.aspId());
+    public void exitOrEndActivityExpression(MScGrammarParser.OrEndActivityExpressionContext ctx) {
+        handleOrExpression(ctx.activity(), ctx.andSubProcessId());
     }
 
     @Override
-    public void enterOrPreActivityExpression(MScGrammarParser.OrPreActivityExpressionContext ctx) {
+    public void enterOrStartActivityExpression(MScGrammarParser.OrStartActivityExpressionContext ctx) {
         currentStatement.setPreActivityType(PreActivityType.IMMEDIATELY_OR);
     }
 
     @Override
-    public void exitOrPreActivityExpression(MScGrammarParser.OrPreActivityExpressionContext ctx) {
-        handleOrExpression(ctx.activity(), ctx.aspId());
+    public void exitOrStartActivityExpression(MScGrammarParser.OrStartActivityExpressionContext ctx) {
+        handleOrExpression(ctx.activity(), ctx.andSubProcessId());
     }
 
     @Override
-    public void enterRepeatSincePreActivityExpression(MScGrammarParser.RepeatSincePreActivityExpressionContext ctx) {
+    public void enterRepeatSinceStartActivityExpression(MScGrammarParser.RepeatSinceStartActivityExpressionContext ctx) {
         currentStatement.setPreActivityType(PreActivityType.IMMEDIATELY_REPEAT_SINCE);
     }
 
     @Override
-    public void exitRepeatSincePreActivityExpression(MScGrammarParser.RepeatSincePreActivityExpressionContext ctx) {
+    public void exitRepeatSinceStartActivityExpression(MScGrammarParser.RepeatSinceStartActivityExpressionContext ctx) {
         currentStatement.addActivity(new Activity(HelperFunctions.getActivityText(ctx.activity(0).WORD()), ActivityType.REPEAT_SINCE_ACTIVITY));
         if (ctx.activity().size() > 1) {
             for (int i = 1; i < ctx.activity().size(); i++) {
                 handleSequenceExpression(ctx.activity(i));
             }
         }
-        for (int i = 0; i < ctx.aspId().size(); i++) {
-            currentStatement.addActivity(new Activity(HelperFunctions.getActivityText(ctx.aspId(i).WORD()), ActivityType.AND_SUBPROCESS));
+        for (int i = 0; i < ctx.andSubProcessId().size(); i++) {
+            currentStatement.addActivity(new Activity(HelperFunctions.getActivityText(ctx.andSubProcessId(i).WORD()), ActivityType.AND_SUBPROCESS));
         }
     }
 
@@ -99,12 +99,12 @@ public class MScGrammarContextListener implements MScGrammarListener {
     }
 
     @Override
-    public void enterSequencePostActivityExpression(MScGrammarParser.SequencePostActivityExpressionContext ctx) {
+    public void enterSequenceEndActivityExpression(MScGrammarParser.SequenceEndActivityExpressionContext ctx) {
         currentStatement.setPostActivityType(PostActivityType.SEQUENCE);
     }
 
     @Override
-    public void exitSequencePostActivityExpression(MScGrammarParser.SequencePostActivityExpressionContext ctx) {
+    public void exitSequenceEndActivityExpression(MScGrammarParser.SequenceEndActivityExpressionContext ctx) {
         handleSequenceExpression(ctx.activity());
     }
 
@@ -156,27 +156,27 @@ public class MScGrammarContextListener implements MScGrammarListener {
     }
 
     @Override
-    public void enterAsp(MScGrammarParser.AspContext ctx) {
+    public void enterAndSubProcess(MScGrammarParser.AndSubProcessContext ctx) {
         currentStatement.setStatementType(StatementType.AND_SUBPROCESS);
     }
 
     @Override
-    public void exitAsp(MScGrammarParser.AspContext ctx) {
+    public void exitAndSubProcess(MScGrammarParser.AndSubProcessContext ctx) {
         List<Activity> aspActivities = ctx.activity().stream().map(a -> new Activity(HelperFunctions.getActivityText(a.WORD()), ActivityType.ACTIVITY)).toList();
-        String aspId = HelperFunctions.getActivityText(ctx.aspId().WORD());
+        String aspId = HelperFunctions.getActivityText(ctx.andSubProcessId().WORD());
         modelStorage.addAndSubProcess(aspId, aspActivities);
         sentenceParser.handleAspDeclaration(aspId);
     }
 
     @Override
-    public void enterOsp(MScGrammarParser.OspContext ctx) {
+    public void enterOrSubProcess(MScGrammarParser.OrSubProcessContext ctx) {
         currentStatement.setStatementType(StatementType.OR_SUBPROCESS);
     }
 
     @Override
-    public void exitOsp(MScGrammarParser.OspContext ctx) {
+    public void exitOrSubProcess(MScGrammarParser.OrSubProcessContext ctx) {
         List<Activity> ospActivities = ctx.activity().stream().map(a -> new Activity(HelperFunctions.getActivityText(a.WORD()), ActivityType.ACTIVITY)).toList();
-        String ospId = HelperFunctions.getActivityText(ctx.ospId().WORD());
+        String ospId = HelperFunctions.getActivityText(ctx.orSubProcessId().WORD());
         modelStorage.addOrSubProcess(ospId, ospActivities);
         sentenceParser.handleOspDeclaration(ospId);
     }
@@ -192,7 +192,7 @@ public class MScGrammarContextListener implements MScGrammarListener {
     }
 
     @Override
-    public void enterSequencePreActivityExpression(MScGrammarParser.SequencePreActivityExpressionContext ctx) {
+    public void enterSequenceStartActivityExpression(MScGrammarParser.SequenceStartActivityExpressionContext ctx) {
         if (currentStatement.getCurrentContextType() == ContextType.PRE_ACTIVITY_EVENTUALLY) {
             currentStatement.setPreActivityType(PreActivityType.EVENTUALLY_SEQUENCE);
         } else if (currentStatement.getCurrentContextType() == ContextType.PRE_ACTIVITY_IMMEDIATELY) {
@@ -201,7 +201,7 @@ public class MScGrammarContextListener implements MScGrammarListener {
     }
 
     @Override
-    public void exitSequencePreActivityExpression(MScGrammarParser.SequencePreActivityExpressionContext ctx) {
+    public void exitSequenceStartActivityExpression(MScGrammarParser.SequenceStartActivityExpressionContext ctx) {
         handleSequenceExpression(ctx.activity());
     }
 
@@ -229,20 +229,20 @@ public class MScGrammarContextListener implements MScGrammarListener {
         currentStatement.addActivity(new Activity(HelperFunctions.getActivityText(activityContext.WORD()), ActivityType.ACTIVITY));
     }
 
-    private void handleAndExpression(List<MScGrammarParser.ActivityContext> activities, List<MScGrammarParser.OspIdContext> ospIdContexts) {
+    private void handleAndExpression(List<MScGrammarParser.ActivityContext> activities, List<MScGrammarParser.OrSubProcessIdContext> ospIdContexts) {
         for (MScGrammarParser.ActivityContext activity : activities) {
             currentStatement.addActivity(new Activity(HelperFunctions.getActivityText(activity.WORD()), ActivityType.ACTIVITY));
         }
-        for (MScGrammarParser.OspIdContext ospId : ospIdContexts) {
+        for (MScGrammarParser.OrSubProcessIdContext ospId : ospIdContexts) {
             currentStatement.addActivity(new Activity(HelperFunctions.getActivityText(ospId.WORD()), ActivityType.OR_SUBPROCESS));
         }
     }
 
-    private void handleOrExpression(List<MScGrammarParser.ActivityContext> activities, List<MScGrammarParser.AspIdContext> aspIdContexts) {
+    private void handleOrExpression(List<MScGrammarParser.ActivityContext> activities, List<MScGrammarParser.AndSubProcessIdContext> aspIdContexts) {
         for (MScGrammarParser.ActivityContext activity : activities) {
             currentStatement.addActivity(new Activity(HelperFunctions.getActivityText(activity.WORD()), ActivityType.ACTIVITY));
         }
-        for (MScGrammarParser.AspIdContext aspId : aspIdContexts) {
+        for (MScGrammarParser.AndSubProcessIdContext aspId : aspIdContexts) {
             currentStatement.addActivity(new Activity(HelperFunctions.getActivityText(aspId.WORD()), ActivityType.AND_SUBPROCESS));
         }
     }
@@ -255,10 +255,10 @@ public class MScGrammarContextListener implements MScGrammarListener {
     public void enterDescription(MScGrammarParser.DescriptionContext ctx) { }
 
     @Override
-    public void enterLeadingStatement(MScGrammarParser.LeadingStatementContext ctx) { }
+    public void enterLeadingText(MScGrammarParser.LeadingTextContext ctx) { }
 
     @Override
-    public void exitLeadingStatement(MScGrammarParser.LeadingStatementContext ctx) { }
+    public void exitLeadingText(MScGrammarParser.LeadingTextContext ctx) { }
 
     @Override
     public void enterStatementList(MScGrammarParser.StatementListContext ctx) { }
@@ -276,16 +276,16 @@ public class MScGrammarContextListener implements MScGrammarListener {
     public void enterActivity(MScGrammarParser.ActivityContext ctx) { }
 
     @Override
-    public void enterAspId(MScGrammarParser.AspIdContext ctx) { }
+    public void enterAndSubProcessId(MScGrammarParser.AndSubProcessIdContext ctx) { }
 
     @Override
-    public void exitAspId(MScGrammarParser.AspIdContext ctx) { }
+    public void exitAndSubProcessId(MScGrammarParser.AndSubProcessIdContext ctx) { }
 
     @Override
-    public void enterOspId(MScGrammarParser.OspIdContext ctx) { }
+    public void enterOrSubProcessId(MScGrammarParser.OrSubProcessIdContext ctx) { }
 
     @Override
-    public void exitOspId(MScGrammarParser.OspIdContext ctx) { }
+    public void exitOrSubProcessId(MScGrammarParser.OrSubProcessIdContext ctx) { }
 
     @Override
     public void visitTerminal(TerminalNode terminalNode) { }

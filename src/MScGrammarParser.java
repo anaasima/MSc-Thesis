@@ -21,23 +21,23 @@ public class MScGrammarParser extends Parser {
 		T__17=18, T__18=19, T__19=20, T__20=21, T__21=22, T__22=23, WORD=24, SPACE=25, 
 		NEWLINE=26;
 	public static final int
-		RULE_description = 0, RULE_leadingStatement = 1, RULE_statementList = 2, 
-		RULE_initialStatement = 3, RULE_statement = 4, RULE_closingStatement = 5, 
-		RULE_afterStatement = 6, RULE_asp = 7, RULE_osp = 8, RULE_immediatelyExpression = 9, 
-		RULE_eventuallyExpression = 10, RULE_sequencePreActivityExpression = 11, 
-		RULE_andPreActivityExpression = 12, RULE_orPreActivityExpression = 13, 
-		RULE_repeatSincePreActivityExpression = 14, RULE_endActivityExpression = 15, 
-		RULE_sequencePostActivityExpression = 16, RULE_andPostActivityExpression = 17, 
-		RULE_orPostActivityExpression = 18, RULE_activity = 19, RULE_aspId = 20, 
-		RULE_ospId = 21;
+		RULE_description = 0, RULE_leadingText = 1, RULE_statementList = 2, RULE_initialStatement = 3, 
+		RULE_statement = 4, RULE_closingStatement = 5, RULE_afterStatement = 6, 
+		RULE_andSubProcess = 7, RULE_orSubProcess = 8, RULE_immediatelyExpression = 9, 
+		RULE_eventuallyExpression = 10, RULE_sequenceStartActivityExpression = 11, 
+		RULE_andStartActivityExpression = 12, RULE_orStartActivityExpression = 13, 
+		RULE_repeatSinceStartActivityExpression = 14, RULE_endActivityExpression = 15, 
+		RULE_sequenceEndActivityExpression = 16, RULE_andEndActivityExpression = 17, 
+		RULE_orEndActivityExpression = 18, RULE_activity = 19, RULE_andSubProcessId = 20, 
+		RULE_orSubProcessId = 21;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"description", "leadingStatement", "statementList", "initialStatement", 
-			"statement", "closingStatement", "afterStatement", "asp", "osp", "immediatelyExpression", 
-			"eventuallyExpression", "sequencePreActivityExpression", "andPreActivityExpression", 
-			"orPreActivityExpression", "repeatSincePreActivityExpression", "endActivityExpression", 
-			"sequencePostActivityExpression", "andPostActivityExpression", "orPostActivityExpression", 
-			"activity", "aspId", "ospId"
+			"description", "leadingText", "statementList", "initialStatement", "statement", 
+			"closingStatement", "afterStatement", "andSubProcess", "orSubProcess", 
+			"immediatelyExpression", "eventuallyExpression", "sequenceStartActivityExpression", 
+			"andStartActivityExpression", "orStartActivityExpression", "repeatSinceStartActivityExpression", 
+			"endActivityExpression", "sequenceEndActivityExpression", "andEndActivityExpression", 
+			"orEndActivityExpression", "activity", "andSubProcessId", "orSubProcessId"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
@@ -113,8 +113,8 @@ public class MScGrammarParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class DescriptionContext extends ParserRuleContext {
-		public LeadingStatementContext leadingStatement() {
-			return getRuleContext(LeadingStatementContext.class,0);
+		public LeadingTextContext leadingText() {
+			return getRuleContext(LeadingTextContext.class,0);
 		}
 		public StatementListContext statementList() {
 			return getRuleContext(StatementListContext.class,0);
@@ -140,7 +140,7 @@ public class MScGrammarParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(44);
-			leadingStatement();
+			leadingText();
 			setState(45);
 			statementList();
 			}
@@ -157,28 +157,28 @@ public class MScGrammarParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class LeadingStatementContext extends ParserRuleContext {
+	public static class LeadingTextContext extends ParserRuleContext {
 		public List<TerminalNode> NEWLINE() { return getTokens(MScGrammarParser.NEWLINE); }
 		public TerminalNode NEWLINE(int i) {
 			return getToken(MScGrammarParser.NEWLINE, i);
 		}
-		public LeadingStatementContext(ParserRuleContext parent, int invokingState) {
+		public LeadingTextContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_leadingStatement; }
+		@Override public int getRuleIndex() { return RULE_leadingText; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).enterLeadingStatement(this);
+			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).enterLeadingText(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).exitLeadingStatement(this);
+			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).exitLeadingText(this);
 		}
 	}
 
-	public final LeadingStatementContext leadingStatement() throws RecognitionException {
-		LeadingStatementContext _localctx = new LeadingStatementContext(_ctx, getState());
-		enterRule(_localctx, 2, RULE_leadingStatement);
+	public final LeadingTextContext leadingText() throws RecognitionException {
+		LeadingTextContext _localctx = new LeadingTextContext(_ctx, getState());
+		enterRule(_localctx, 2, RULE_leadingText);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
@@ -351,11 +351,11 @@ public class MScGrammarParser extends Parser {
 		public ClosingStatementContext closingStatement() {
 			return getRuleContext(ClosingStatementContext.class,0);
 		}
-		public AspContext asp() {
-			return getRuleContext(AspContext.class,0);
+		public AndSubProcessContext andSubProcess() {
+			return getRuleContext(AndSubProcessContext.class,0);
 		}
-		public OspContext osp() {
-			return getRuleContext(OspContext.class,0);
+		public OrSubProcessContext orSubProcess() {
+			return getRuleContext(OrSubProcessContext.class,0);
 		}
 		public List<TerminalNode> NEWLINE() { return getTokens(MScGrammarParser.NEWLINE); }
 		public TerminalNode NEWLINE(int i) {
@@ -400,13 +400,13 @@ public class MScGrammarParser extends Parser {
 			case 3:
 				{
 				setState(74);
-				asp();
+				andSubProcess();
 				}
 				break;
 			case 4:
 				{
 				setState(75);
-				osp();
+				orSubProcess();
 				}
 				break;
 			}
@@ -552,9 +552,9 @@ public class MScGrammarParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class AspContext extends ParserRuleContext {
-		public AspIdContext aspId() {
-			return getRuleContext(AspIdContext.class,0);
+	public static class AndSubProcessContext extends ParserRuleContext {
+		public AndSubProcessIdContext andSubProcessId() {
+			return getRuleContext(AndSubProcessIdContext.class,0);
 		}
 		public List<ActivityContext> activity() {
 			return getRuleContexts(ActivityContext.class);
@@ -562,29 +562,29 @@ public class MScGrammarParser extends Parser {
 		public ActivityContext activity(int i) {
 			return getRuleContext(ActivityContext.class,i);
 		}
-		public AspContext(ParserRuleContext parent, int invokingState) {
+		public AndSubProcessContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_asp; }
+		@Override public int getRuleIndex() { return RULE_andSubProcess; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).enterAsp(this);
+			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).enterAndSubProcess(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).exitAsp(this);
+			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).exitAndSubProcess(this);
 		}
 	}
 
-	public final AspContext asp() throws RecognitionException {
-		AspContext _localctx = new AspContext(_ctx, getState());
-		enterRule(_localctx, 14, RULE_asp);
+	public final AndSubProcessContext andSubProcess() throws RecognitionException {
+		AndSubProcessContext _localctx = new AndSubProcessContext(_ctx, getState());
+		enterRule(_localctx, 14, RULE_andSubProcess);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(97);
-			aspId();
+			andSubProcessId();
 			setState(98);
 			match(T__6);
 			setState(99);
@@ -627,9 +627,9 @@ public class MScGrammarParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class OspContext extends ParserRuleContext {
-		public OspIdContext ospId() {
-			return getRuleContext(OspIdContext.class,0);
+	public static class OrSubProcessContext extends ParserRuleContext {
+		public OrSubProcessIdContext orSubProcessId() {
+			return getRuleContext(OrSubProcessIdContext.class,0);
 		}
 		public List<ActivityContext> activity() {
 			return getRuleContexts(ActivityContext.class);
@@ -637,29 +637,29 @@ public class MScGrammarParser extends Parser {
 		public ActivityContext activity(int i) {
 			return getRuleContext(ActivityContext.class,i);
 		}
-		public OspContext(ParserRuleContext parent, int invokingState) {
+		public OrSubProcessContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_osp; }
+		@Override public int getRuleIndex() { return RULE_orSubProcess; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).enterOsp(this);
+			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).enterOrSubProcess(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).exitOsp(this);
+			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).exitOrSubProcess(this);
 		}
 	}
 
-	public final OspContext osp() throws RecognitionException {
-		OspContext _localctx = new OspContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_osp);
+	public final OrSubProcessContext orSubProcess() throws RecognitionException {
+		OrSubProcessContext _localctx = new OrSubProcessContext(_ctx, getState());
+		enterRule(_localctx, 16, RULE_orSubProcess);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(111);
-			ospId();
+			orSubProcessId();
 			setState(112);
 			match(T__6);
 			setState(113);
@@ -703,17 +703,17 @@ public class MScGrammarParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class ImmediatelyExpressionContext extends ParserRuleContext {
-		public SequencePreActivityExpressionContext sequencePreActivityExpression() {
-			return getRuleContext(SequencePreActivityExpressionContext.class,0);
+		public SequenceStartActivityExpressionContext sequenceStartActivityExpression() {
+			return getRuleContext(SequenceStartActivityExpressionContext.class,0);
 		}
-		public AndPreActivityExpressionContext andPreActivityExpression() {
-			return getRuleContext(AndPreActivityExpressionContext.class,0);
+		public AndStartActivityExpressionContext andStartActivityExpression() {
+			return getRuleContext(AndStartActivityExpressionContext.class,0);
 		}
-		public OrPreActivityExpressionContext orPreActivityExpression() {
-			return getRuleContext(OrPreActivityExpressionContext.class,0);
+		public OrStartActivityExpressionContext orStartActivityExpression() {
+			return getRuleContext(OrStartActivityExpressionContext.class,0);
 		}
-		public RepeatSincePreActivityExpressionContext repeatSincePreActivityExpression() {
-			return getRuleContext(RepeatSincePreActivityExpressionContext.class,0);
+		public RepeatSinceStartActivityExpressionContext repeatSinceStartActivityExpression() {
+			return getRuleContext(RepeatSinceStartActivityExpressionContext.class,0);
 		}
 		public ImmediatelyExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -743,25 +743,25 @@ public class MScGrammarParser extends Parser {
 			case 1:
 				{
 				setState(126);
-				sequencePreActivityExpression();
+				sequenceStartActivityExpression();
 				}
 				break;
 			case 2:
 				{
 				setState(127);
-				andPreActivityExpression();
+				andStartActivityExpression();
 				}
 				break;
 			case 3:
 				{
 				setState(128);
-				orPreActivityExpression();
+				orStartActivityExpression();
 				}
 				break;
 			case 4:
 				{
 				setState(129);
-				repeatSincePreActivityExpression();
+				repeatSinceStartActivityExpression();
 				}
 				break;
 			}
@@ -780,8 +780,8 @@ public class MScGrammarParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class EventuallyExpressionContext extends ParserRuleContext {
-		public SequencePreActivityExpressionContext sequencePreActivityExpression() {
-			return getRuleContext(SequencePreActivityExpressionContext.class,0);
+		public SequenceStartActivityExpressionContext sequenceStartActivityExpression() {
+			return getRuleContext(SequenceStartActivityExpressionContext.class,0);
 		}
 		public EventuallyExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -806,7 +806,7 @@ public class MScGrammarParser extends Parser {
 			setState(132);
 			match(T__10);
 			setState(133);
-			sequencePreActivityExpression();
+			sequenceStartActivityExpression();
 			}
 		}
 		catch (RecognitionException re) {
@@ -821,27 +821,27 @@ public class MScGrammarParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class SequencePreActivityExpressionContext extends ParserRuleContext {
+	public static class SequenceStartActivityExpressionContext extends ParserRuleContext {
 		public ActivityContext activity() {
 			return getRuleContext(ActivityContext.class,0);
 		}
-		public SequencePreActivityExpressionContext(ParserRuleContext parent, int invokingState) {
+		public SequenceStartActivityExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_sequencePreActivityExpression; }
+		@Override public int getRuleIndex() { return RULE_sequenceStartActivityExpression; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).enterSequencePreActivityExpression(this);
+			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).enterSequenceStartActivityExpression(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).exitSequencePreActivityExpression(this);
+			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).exitSequenceStartActivityExpression(this);
 		}
 	}
 
-	public final SequencePreActivityExpressionContext sequencePreActivityExpression() throws RecognitionException {
-		SequencePreActivityExpressionContext _localctx = new SequencePreActivityExpressionContext(_ctx, getState());
-		enterRule(_localctx, 22, RULE_sequencePreActivityExpression);
+	public final SequenceStartActivityExpressionContext sequenceStartActivityExpression() throws RecognitionException {
+		SequenceStartActivityExpressionContext _localctx = new SequenceStartActivityExpressionContext(_ctx, getState());
+		enterRule(_localctx, 22, RULE_sequenceStartActivityExpression);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
@@ -863,36 +863,36 @@ public class MScGrammarParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class AndPreActivityExpressionContext extends ParserRuleContext {
+	public static class AndStartActivityExpressionContext extends ParserRuleContext {
 		public List<ActivityContext> activity() {
 			return getRuleContexts(ActivityContext.class);
 		}
 		public ActivityContext activity(int i) {
 			return getRuleContext(ActivityContext.class,i);
 		}
-		public List<OspIdContext> ospId() {
-			return getRuleContexts(OspIdContext.class);
+		public List<OrSubProcessIdContext> orSubProcessId() {
+			return getRuleContexts(OrSubProcessIdContext.class);
 		}
-		public OspIdContext ospId(int i) {
-			return getRuleContext(OspIdContext.class,i);
+		public OrSubProcessIdContext orSubProcessId(int i) {
+			return getRuleContext(OrSubProcessIdContext.class,i);
 		}
-		public AndPreActivityExpressionContext(ParserRuleContext parent, int invokingState) {
+		public AndStartActivityExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_andPreActivityExpression; }
+		@Override public int getRuleIndex() { return RULE_andStartActivityExpression; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).enterAndPreActivityExpression(this);
+			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).enterAndStartActivityExpression(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).exitAndPreActivityExpression(this);
+			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).exitAndStartActivityExpression(this);
 		}
 	}
 
-	public final AndPreActivityExpressionContext andPreActivityExpression() throws RecognitionException {
-		AndPreActivityExpressionContext _localctx = new AndPreActivityExpressionContext(_ctx, getState());
-		enterRule(_localctx, 24, RULE_andPreActivityExpression);
+	public final AndStartActivityExpressionContext andStartActivityExpression() throws RecognitionException {
+		AndStartActivityExpressionContext _localctx = new AndStartActivityExpressionContext(_ctx, getState());
+		enterRule(_localctx, 24, RULE_andStartActivityExpression);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
@@ -911,7 +911,7 @@ public class MScGrammarParser extends Parser {
 			case T__21:
 				{
 				setState(140);
-				ospId();
+				orSubProcessId();
 				}
 				break;
 			default:
@@ -931,7 +931,7 @@ public class MScGrammarParser extends Parser {
 			case T__21:
 				{
 				setState(145);
-				ospId();
+				orSubProcessId();
 				}
 				break;
 			default:
@@ -958,7 +958,7 @@ public class MScGrammarParser extends Parser {
 					case T__21:
 						{
 						setState(150);
-						ospId();
+						orSubProcessId();
 						}
 						break;
 					default:
@@ -985,36 +985,36 @@ public class MScGrammarParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class OrPreActivityExpressionContext extends ParserRuleContext {
+	public static class OrStartActivityExpressionContext extends ParserRuleContext {
 		public List<ActivityContext> activity() {
 			return getRuleContexts(ActivityContext.class);
 		}
 		public ActivityContext activity(int i) {
 			return getRuleContext(ActivityContext.class,i);
 		}
-		public List<AspIdContext> aspId() {
-			return getRuleContexts(AspIdContext.class);
+		public List<AndSubProcessIdContext> andSubProcessId() {
+			return getRuleContexts(AndSubProcessIdContext.class);
 		}
-		public AspIdContext aspId(int i) {
-			return getRuleContext(AspIdContext.class,i);
+		public AndSubProcessIdContext andSubProcessId(int i) {
+			return getRuleContext(AndSubProcessIdContext.class,i);
 		}
-		public OrPreActivityExpressionContext(ParserRuleContext parent, int invokingState) {
+		public OrStartActivityExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_orPreActivityExpression; }
+		@Override public int getRuleIndex() { return RULE_orStartActivityExpression; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).enterOrPreActivityExpression(this);
+			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).enterOrStartActivityExpression(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).exitOrPreActivityExpression(this);
+			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).exitOrStartActivityExpression(this);
 		}
 	}
 
-	public final OrPreActivityExpressionContext orPreActivityExpression() throws RecognitionException {
-		OrPreActivityExpressionContext _localctx = new OrPreActivityExpressionContext(_ctx, getState());
-		enterRule(_localctx, 26, RULE_orPreActivityExpression);
+	public final OrStartActivityExpressionContext orStartActivityExpression() throws RecognitionException {
+		OrStartActivityExpressionContext _localctx = new OrStartActivityExpressionContext(_ctx, getState());
+		enterRule(_localctx, 26, RULE_orStartActivityExpression);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
@@ -1033,7 +1033,7 @@ public class MScGrammarParser extends Parser {
 			case T__21:
 				{
 				setState(160);
-				aspId();
+				andSubProcessId();
 				}
 				break;
 			default:
@@ -1053,7 +1053,7 @@ public class MScGrammarParser extends Parser {
 			case T__21:
 				{
 				setState(165);
-				aspId();
+				andSubProcessId();
 				}
 				break;
 			default:
@@ -1080,7 +1080,7 @@ public class MScGrammarParser extends Parser {
 					case T__21:
 						{
 						setState(170);
-						aspId();
+						andSubProcessId();
 						}
 						break;
 					default:
@@ -1107,36 +1107,36 @@ public class MScGrammarParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class RepeatSincePreActivityExpressionContext extends ParserRuleContext {
+	public static class RepeatSinceStartActivityExpressionContext extends ParserRuleContext {
 		public List<ActivityContext> activity() {
 			return getRuleContexts(ActivityContext.class);
 		}
 		public ActivityContext activity(int i) {
 			return getRuleContext(ActivityContext.class,i);
 		}
-		public List<AspIdContext> aspId() {
-			return getRuleContexts(AspIdContext.class);
+		public List<AndSubProcessIdContext> andSubProcessId() {
+			return getRuleContexts(AndSubProcessIdContext.class);
 		}
-		public AspIdContext aspId(int i) {
-			return getRuleContext(AspIdContext.class,i);
+		public AndSubProcessIdContext andSubProcessId(int i) {
+			return getRuleContext(AndSubProcessIdContext.class,i);
 		}
-		public RepeatSincePreActivityExpressionContext(ParserRuleContext parent, int invokingState) {
+		public RepeatSinceStartActivityExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_repeatSincePreActivityExpression; }
+		@Override public int getRuleIndex() { return RULE_repeatSinceStartActivityExpression; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).enterRepeatSincePreActivityExpression(this);
+			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).enterRepeatSinceStartActivityExpression(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).exitRepeatSincePreActivityExpression(this);
+			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).exitRepeatSinceStartActivityExpression(this);
 		}
 	}
 
-	public final RepeatSincePreActivityExpressionContext repeatSincePreActivityExpression() throws RecognitionException {
-		RepeatSincePreActivityExpressionContext _localctx = new RepeatSincePreActivityExpressionContext(_ctx, getState());
-		enterRule(_localctx, 28, RULE_repeatSincePreActivityExpression);
+	public final RepeatSinceStartActivityExpressionContext repeatSinceStartActivityExpression() throws RecognitionException {
+		RepeatSinceStartActivityExpressionContext _localctx = new RepeatSinceStartActivityExpressionContext(_ctx, getState());
+		enterRule(_localctx, 28, RULE_repeatSinceStartActivityExpression);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
@@ -1159,7 +1159,7 @@ public class MScGrammarParser extends Parser {
 			case T__21:
 				{
 				setState(182);
-				aspId();
+				andSubProcessId();
 				}
 				break;
 			default:
@@ -1186,7 +1186,7 @@ public class MScGrammarParser extends Parser {
 					case T__21:
 						{
 						setState(187);
-						aspId();
+						andSubProcessId();
 						}
 						break;
 					default:
@@ -1214,14 +1214,14 @@ public class MScGrammarParser extends Parser {
 
 	@SuppressWarnings("CheckReturnValue")
 	public static class EndActivityExpressionContext extends ParserRuleContext {
-		public SequencePostActivityExpressionContext sequencePostActivityExpression() {
-			return getRuleContext(SequencePostActivityExpressionContext.class,0);
+		public SequenceEndActivityExpressionContext sequenceEndActivityExpression() {
+			return getRuleContext(SequenceEndActivityExpressionContext.class,0);
 		}
-		public AndPostActivityExpressionContext andPostActivityExpression() {
-			return getRuleContext(AndPostActivityExpressionContext.class,0);
+		public AndEndActivityExpressionContext andEndActivityExpression() {
+			return getRuleContext(AndEndActivityExpressionContext.class,0);
 		}
-		public OrPostActivityExpressionContext orPostActivityExpression() {
-			return getRuleContext(OrPostActivityExpressionContext.class,0);
+		public OrEndActivityExpressionContext orEndActivityExpression() {
+			return getRuleContext(OrEndActivityExpressionContext.class,0);
 		}
 		public EndActivityExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -1249,19 +1249,19 @@ public class MScGrammarParser extends Parser {
 			case 1:
 				{
 				setState(195);
-				sequencePostActivityExpression();
+				sequenceEndActivityExpression();
 				}
 				break;
 			case 2:
 				{
 				setState(196);
-				andPostActivityExpression();
+				andEndActivityExpression();
 				}
 				break;
 			case 3:
 				{
 				setState(197);
-				orPostActivityExpression();
+				orEndActivityExpression();
 				}
 				break;
 			}
@@ -1279,27 +1279,27 @@ public class MScGrammarParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class SequencePostActivityExpressionContext extends ParserRuleContext {
+	public static class SequenceEndActivityExpressionContext extends ParserRuleContext {
 		public ActivityContext activity() {
 			return getRuleContext(ActivityContext.class,0);
 		}
-		public SequencePostActivityExpressionContext(ParserRuleContext parent, int invokingState) {
+		public SequenceEndActivityExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_sequencePostActivityExpression; }
+		@Override public int getRuleIndex() { return RULE_sequenceEndActivityExpression; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).enterSequencePostActivityExpression(this);
+			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).enterSequenceEndActivityExpression(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).exitSequencePostActivityExpression(this);
+			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).exitSequenceEndActivityExpression(this);
 		}
 	}
 
-	public final SequencePostActivityExpressionContext sequencePostActivityExpression() throws RecognitionException {
-		SequencePostActivityExpressionContext _localctx = new SequencePostActivityExpressionContext(_ctx, getState());
-		enterRule(_localctx, 32, RULE_sequencePostActivityExpression);
+	public final SequenceEndActivityExpressionContext sequenceEndActivityExpression() throws RecognitionException {
+		SequenceEndActivityExpressionContext _localctx = new SequenceEndActivityExpressionContext(_ctx, getState());
+		enterRule(_localctx, 32, RULE_sequenceEndActivityExpression);
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
@@ -1321,36 +1321,36 @@ public class MScGrammarParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class AndPostActivityExpressionContext extends ParserRuleContext {
+	public static class AndEndActivityExpressionContext extends ParserRuleContext {
 		public List<ActivityContext> activity() {
 			return getRuleContexts(ActivityContext.class);
 		}
 		public ActivityContext activity(int i) {
 			return getRuleContext(ActivityContext.class,i);
 		}
-		public List<OspIdContext> ospId() {
-			return getRuleContexts(OspIdContext.class);
+		public List<OrSubProcessIdContext> orSubProcessId() {
+			return getRuleContexts(OrSubProcessIdContext.class);
 		}
-		public OspIdContext ospId(int i) {
-			return getRuleContext(OspIdContext.class,i);
+		public OrSubProcessIdContext orSubProcessId(int i) {
+			return getRuleContext(OrSubProcessIdContext.class,i);
 		}
-		public AndPostActivityExpressionContext(ParserRuleContext parent, int invokingState) {
+		public AndEndActivityExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_andPostActivityExpression; }
+		@Override public int getRuleIndex() { return RULE_andEndActivityExpression; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).enterAndPostActivityExpression(this);
+			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).enterAndEndActivityExpression(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).exitAndPostActivityExpression(this);
+			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).exitAndEndActivityExpression(this);
 		}
 	}
 
-	public final AndPostActivityExpressionContext andPostActivityExpression() throws RecognitionException {
-		AndPostActivityExpressionContext _localctx = new AndPostActivityExpressionContext(_ctx, getState());
-		enterRule(_localctx, 34, RULE_andPostActivityExpression);
+	public final AndEndActivityExpressionContext andEndActivityExpression() throws RecognitionException {
+		AndEndActivityExpressionContext _localctx = new AndEndActivityExpressionContext(_ctx, getState());
+		enterRule(_localctx, 34, RULE_andEndActivityExpression);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
@@ -1367,7 +1367,7 @@ public class MScGrammarParser extends Parser {
 			case T__21:
 				{
 				setState(204);
-				ospId();
+				orSubProcessId();
 				}
 				break;
 			default:
@@ -1394,7 +1394,7 @@ public class MScGrammarParser extends Parser {
 					case T__21:
 						{
 						setState(209);
-						ospId();
+						orSubProcessId();
 						}
 						break;
 					default:
@@ -1421,7 +1421,7 @@ public class MScGrammarParser extends Parser {
 			case T__21:
 				{
 				setState(220);
-				ospId();
+				orSubProcessId();
 				}
 				break;
 			default:
@@ -1443,36 +1443,36 @@ public class MScGrammarParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class OrPostActivityExpressionContext extends ParserRuleContext {
+	public static class OrEndActivityExpressionContext extends ParserRuleContext {
 		public List<ActivityContext> activity() {
 			return getRuleContexts(ActivityContext.class);
 		}
 		public ActivityContext activity(int i) {
 			return getRuleContext(ActivityContext.class,i);
 		}
-		public List<AspIdContext> aspId() {
-			return getRuleContexts(AspIdContext.class);
+		public List<AndSubProcessIdContext> andSubProcessId() {
+			return getRuleContexts(AndSubProcessIdContext.class);
 		}
-		public AspIdContext aspId(int i) {
-			return getRuleContext(AspIdContext.class,i);
+		public AndSubProcessIdContext andSubProcessId(int i) {
+			return getRuleContext(AndSubProcessIdContext.class,i);
 		}
-		public OrPostActivityExpressionContext(ParserRuleContext parent, int invokingState) {
+		public OrEndActivityExpressionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_orPostActivityExpression; }
+		@Override public int getRuleIndex() { return RULE_orEndActivityExpression; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).enterOrPostActivityExpression(this);
+			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).enterOrEndActivityExpression(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).exitOrPostActivityExpression(this);
+			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).exitOrEndActivityExpression(this);
 		}
 	}
 
-	public final OrPostActivityExpressionContext orPostActivityExpression() throws RecognitionException {
-		OrPostActivityExpressionContext _localctx = new OrPostActivityExpressionContext(_ctx, getState());
-		enterRule(_localctx, 36, RULE_orPostActivityExpression);
+	public final OrEndActivityExpressionContext orEndActivityExpression() throws RecognitionException {
+		OrEndActivityExpressionContext _localctx = new OrEndActivityExpressionContext(_ctx, getState());
+		enterRule(_localctx, 36, RULE_orEndActivityExpression);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
@@ -1491,7 +1491,7 @@ public class MScGrammarParser extends Parser {
 			case T__21:
 				{
 				setState(227);
-				aspId();
+				andSubProcessId();
 				}
 				break;
 			default:
@@ -1518,7 +1518,7 @@ public class MScGrammarParser extends Parser {
 					case T__21:
 						{
 						setState(232);
-						aspId();
+						andSubProcessId();
 						}
 						break;
 					default:
@@ -1545,7 +1545,7 @@ public class MScGrammarParser extends Parser {
 			case T__21:
 				{
 				setState(243);
-				aspId();
+				andSubProcessId();
 				}
 				break;
 			default:
@@ -1635,7 +1635,7 @@ public class MScGrammarParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class AspIdContext extends ParserRuleContext {
+	public static class AndSubProcessIdContext extends ParserRuleContext {
 		public List<TerminalNode> WORD() { return getTokens(MScGrammarParser.WORD); }
 		public TerminalNode WORD(int i) {
 			return getToken(MScGrammarParser.WORD, i);
@@ -1644,23 +1644,23 @@ public class MScGrammarParser extends Parser {
 		public TerminalNode SPACE(int i) {
 			return getToken(MScGrammarParser.SPACE, i);
 		}
-		public AspIdContext(ParserRuleContext parent, int invokingState) {
+		public AndSubProcessIdContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_aspId; }
+		@Override public int getRuleIndex() { return RULE_andSubProcessId; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).enterAspId(this);
+			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).enterAndSubProcessId(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).exitAspId(this);
+			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).exitAndSubProcessId(this);
 		}
 	}
 
-	public final AspIdContext aspId() throws RecognitionException {
-		AspIdContext _localctx = new AspIdContext(_ctx, getState());
-		enterRule(_localctx, 40, RULE_aspId);
+	public final AndSubProcessIdContext andSubProcessId() throws RecognitionException {
+		AndSubProcessIdContext _localctx = new AndSubProcessIdContext(_ctx, getState());
+		enterRule(_localctx, 40, RULE_andSubProcessId);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
@@ -1703,7 +1703,7 @@ public class MScGrammarParser extends Parser {
 	}
 
 	@SuppressWarnings("CheckReturnValue")
-	public static class OspIdContext extends ParserRuleContext {
+	public static class OrSubProcessIdContext extends ParserRuleContext {
 		public List<TerminalNode> WORD() { return getTokens(MScGrammarParser.WORD); }
 		public TerminalNode WORD(int i) {
 			return getToken(MScGrammarParser.WORD, i);
@@ -1712,23 +1712,23 @@ public class MScGrammarParser extends Parser {
 		public TerminalNode SPACE(int i) {
 			return getToken(MScGrammarParser.SPACE, i);
 		}
-		public OspIdContext(ParserRuleContext parent, int invokingState) {
+		public OrSubProcessIdContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_ospId; }
+		@Override public int getRuleIndex() { return RULE_orSubProcessId; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).enterOspId(this);
+			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).enterOrSubProcessId(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).exitOspId(this);
+			if ( listener instanceof MScGrammarListener ) ((MScGrammarListener)listener).exitOrSubProcessId(this);
 		}
 	}
 
-	public final OspIdContext ospId() throws RecognitionException {
-		OspIdContext _localctx = new OspIdContext(_ctx, getState());
-		enterRule(_localctx, 42, RULE_ospId);
+	public final OrSubProcessIdContext orSubProcessId() throws RecognitionException {
+		OrSubProcessIdContext _localctx = new OrSubProcessIdContext(_ctx, getState());
+		enterRule(_localctx, 42, RULE_orSubProcessId);
 		try {
 			int _alt;
 			enterOuterAlt(_localctx, 1);

@@ -28,13 +28,13 @@ public class MScGrammarBaseListener implements MScGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLeadingStatement(MScGrammarParser.LeadingStatementContext ctx) { }
+	@Override public void enterLeadingText(MScGrammarParser.LeadingTextContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitLeadingStatement(MScGrammarParser.LeadingStatementContext ctx) { }
+	@Override public void exitLeadingText(MScGrammarParser.LeadingTextContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -100,25 +100,25 @@ public class MScGrammarBaseListener implements MScGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAsp(MScGrammarParser.AspContext ctx) { }
+	@Override public void enterAndSubProcess(MScGrammarParser.AndSubProcessContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAsp(MScGrammarParser.AspContext ctx) { }
+	@Override public void exitAndSubProcess(MScGrammarParser.AndSubProcessContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOsp(MScGrammarParser.OspContext ctx) { }
+	@Override public void enterOrSubProcess(MScGrammarParser.OrSubProcessContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitOsp(MScGrammarParser.OspContext ctx) { }
+	@Override public void exitOrSubProcess(MScGrammarParser.OrSubProcessContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -148,49 +148,49 @@ public class MScGrammarBaseListener implements MScGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSequencePreActivityExpression(MScGrammarParser.SequencePreActivityExpressionContext ctx) { }
+	@Override public void enterSequenceStartActivityExpression(MScGrammarParser.SequenceStartActivityExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSequencePreActivityExpression(MScGrammarParser.SequencePreActivityExpressionContext ctx) { }
+	@Override public void exitSequenceStartActivityExpression(MScGrammarParser.SequenceStartActivityExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAndPreActivityExpression(MScGrammarParser.AndPreActivityExpressionContext ctx) { }
+	@Override public void enterAndStartActivityExpression(MScGrammarParser.AndStartActivityExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAndPreActivityExpression(MScGrammarParser.AndPreActivityExpressionContext ctx) { }
+	@Override public void exitAndStartActivityExpression(MScGrammarParser.AndStartActivityExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOrPreActivityExpression(MScGrammarParser.OrPreActivityExpressionContext ctx) { }
+	@Override public void enterOrStartActivityExpression(MScGrammarParser.OrStartActivityExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitOrPreActivityExpression(MScGrammarParser.OrPreActivityExpressionContext ctx) { }
+	@Override public void exitOrStartActivityExpression(MScGrammarParser.OrStartActivityExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterRepeatSincePreActivityExpression(MScGrammarParser.RepeatSincePreActivityExpressionContext ctx) { }
+	@Override public void enterRepeatSinceStartActivityExpression(MScGrammarParser.RepeatSinceStartActivityExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitRepeatSincePreActivityExpression(MScGrammarParser.RepeatSincePreActivityExpressionContext ctx) { }
+	@Override public void exitRepeatSinceStartActivityExpression(MScGrammarParser.RepeatSinceStartActivityExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -208,37 +208,37 @@ public class MScGrammarBaseListener implements MScGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterSequencePostActivityExpression(MScGrammarParser.SequencePostActivityExpressionContext ctx) { }
+	@Override public void enterSequenceEndActivityExpression(MScGrammarParser.SequenceEndActivityExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitSequencePostActivityExpression(MScGrammarParser.SequencePostActivityExpressionContext ctx) { }
+	@Override public void exitSequenceEndActivityExpression(MScGrammarParser.SequenceEndActivityExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAndPostActivityExpression(MScGrammarParser.AndPostActivityExpressionContext ctx) { }
+	@Override public void enterAndEndActivityExpression(MScGrammarParser.AndEndActivityExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAndPostActivityExpression(MScGrammarParser.AndPostActivityExpressionContext ctx) { }
+	@Override public void exitAndEndActivityExpression(MScGrammarParser.AndEndActivityExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOrPostActivityExpression(MScGrammarParser.OrPostActivityExpressionContext ctx) { }
+	@Override public void enterOrEndActivityExpression(MScGrammarParser.OrEndActivityExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitOrPostActivityExpression(MScGrammarParser.OrPostActivityExpressionContext ctx) { }
+	@Override public void exitOrEndActivityExpression(MScGrammarParser.OrEndActivityExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -256,25 +256,25 @@ public class MScGrammarBaseListener implements MScGrammarListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAspId(MScGrammarParser.AspIdContext ctx) { }
+	@Override public void enterAndSubProcessId(MScGrammarParser.AndSubProcessIdContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAspId(MScGrammarParser.AspIdContext ctx) { }
+	@Override public void exitAndSubProcessId(MScGrammarParser.AndSubProcessIdContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterOspId(MScGrammarParser.OspIdContext ctx) { }
+	@Override public void enterOrSubProcessId(MScGrammarParser.OrSubProcessIdContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitOspId(MScGrammarParser.OspIdContext ctx) { }
+	@Override public void exitOrSubProcessId(MScGrammarParser.OrSubProcessIdContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
