@@ -18,6 +18,10 @@ public class MScGrammarContextListener implements MScGrammarListener {
 
     @Override
     public void enterClosingStatement(MScGrammarParser.ClosingStatementContext ctx) {
+        if (currentStatement.getStatementType() != null) {
+            statementNumber += 1;
+            currentStatement = new StatementMetadata(statementNumber);
+        }
         currentStatement.setStatementType(StatementType.CLOSING);
     }
 
