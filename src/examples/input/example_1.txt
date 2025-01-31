@@ -15,7 +15,7 @@ After "update HIS selecting" ends, eventually start "prepare sampling".
 After "prepare sampling" ends, eventually start "take sample".
 After "take sample" ends, immediately start "send sample to lab" and start "conduct follow up treatment".
 After "send sample to lab" ends, immediately start "validate sample".
-After "validate sample" ends, immediately either repeat since "arrange appointment" or start "perform analysis".
+After "validate sample" ends, immediately repeat since "arrange appointment" or start "perform analysis".
 After "perform analysis" ends, immediately start "validate results".
 After "validate results" ends, immediately start "diagnose with prescribe therapy".
 
