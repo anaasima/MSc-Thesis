@@ -33,7 +33,7 @@ andStartActivityExpression
 orStartActivityExpression
     : 'either start ' (activity | andSubProcessId) ' or start ' (activity | andSubProcessId) (' or start ' (activity | andSubProcessId))*? ;
 repeatSinceStartActivityExpression
-    : 'either repeat since ' activity ' or start ' (activity | andSubProcessId) (' or start ' (activity | andSubProcessId))*?;
+    : 'repeat since ' activity (' or start ' (activity | andSubProcessId))*?;
 
 endActivityExpression
     : (sequenceEndActivityExpression | andEndActivityExpression | orEndActivityExpression);

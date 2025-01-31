@@ -1,8 +1,8 @@
 grammar MScGrammar ;
 description
-    : leadingStatement statementList;
+    : leadingText statementList;
 
-leadingStatement
+leadingText
     : 'The following textual description follows the closed-world assumption, meaning that only the activities specified can be executed in the specified order. Any possible activity and execution that is not specified is considered impossible.' (NEWLINE)*;
 
 statementList
@@ -10,46 +10,46 @@ statementList
 initialStatement
     : 'Initially start ' activity '.' (NEWLINE)*;
 statement
-    : (afterStatement | closingStatement | asp | osp) (NEWLINE)*;
+    : (afterStatement | closingStatement | andSubProcess | orSubProcess) (NEWLINE)*;
 closingStatement
-    : 'After ' postActivityExpression ', the process finishes.' ;
+    : 'After ' endActivityExpression ', the process finishes.' ;
 
 afterStatement
-    : 'After ' postActivityExpression ', ' (immediatelyExpression | eventuallyExpression) '.';
-asp
-    : aspId ': ' activity ' and ' activity (' and ' activity)*? '.';
-osp
-    : ospId ': ' activity ' or ' activity (' or ' activity)*? '.';
+    : 'After ' endActivityExpression ', ' (immediatelyExpression | eventuallyExpression) '.';
+andSubProcess
+    : andSubProcessId ': ' activity ' and ' activity (' and ' activity)*? '.';
+orSubProcess
+    : orSubProcessId ': ' activity ' or ' activity (' or ' activity)*? '.';
 
 immediatelyExpression
-    : 'immediately ' (sequencePreActivityExpression | andPreActivityExpression | orPreActivityExpression | repeatSincePreActivityExpression);
+    : 'immediately ' (sequenceStartActivityExpression | andStartActivityExpression | orStartActivityExpression | repeatSinceStartActivityExpression);
 eventuallyExpression
-    : 'eventually ' sequencePreActivityExpression;
+    : 'eventually ' sequenceStartActivityExpression;
 
-sequencePreActivityExpression
+sequenceStartActivityExpression
     : 'start ' activity;
-andPreActivityExpression
-    : 'start ' (activity | ospId) ' and start ' (activity | ospId) (' and start ' (activity | ospId))*? ;
-orPreActivityExpression
-    : 'either start ' (activity | aspId) ' or start ' (activity | aspId) (' or start ' (activity | aspId))*? ;
-repeatSincePreActivityExpression
-    : 'either repeat since ' activity ' or start ' (activity | aspId) (' or start ' (activity | aspId))*?;
+andStartActivityExpression
+    : 'start ' (activity | orSubProcessId) ' and start ' (activity | orSubProcessId) (' and start ' (activity | orSubProcessId))*? ;
+orStartActivityExpression
+    : 'either start ' (activity | andSubProcessId) ' or start ' (activity | andSubProcessId) (' or start ' (activity | andSubProcessId))*? ;
+repeatSinceStartActivityExpression
+    : 'repeat since ' activity (' or start ' (activity | andSubProcessId))*?;
 
-postActivityExpression
-    : (sequencePostActivityExpression | andPostActivityExpression | orPostActivityExpression);
+endActivityExpression
+    : (sequenceEndActivityExpression | andEndActivityExpression | orEndActivityExpression);
 
-sequencePostActivityExpression
+sequenceEndActivityExpression
     : activity ' ends';
-andPostActivityExpression
-    : (activity | ospId) ' ends and ' ((activity | ospId) ' ends and ')*? (activity | ospId) ' ends';
-orPostActivityExpression
-    : 'either ' (activity | aspId) ' ends or ' ((activity | aspId) ' ends or ')*? (activity | aspId) ' ends';
+andEndActivityExpression
+    : (activity | orSubProcessId) ' ends and ' ((activity | orSubProcessId) ' ends and ')*? (activity | orSubProcessId) ' ends';
+orEndActivityExpression
+    : 'either ' (activity | andSubProcessId) ' ends or ' ((activity | andSubProcessId) ' ends or ')*? (activity | andSubProcessId) ' ends';
 
 activity
     : '"' WORD (SPACE WORD)*? '"' ;
-aspId
+andSubProcessId
     : '(' WORD (SPACE WORD)*? ')' ;
-ospId
+orSubProcessId
     : '(' WORD (SPACE WORD)*? ')' ;
 WORD
     : [a-zA-Z0-9]+ ;
