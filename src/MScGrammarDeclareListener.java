@@ -100,6 +100,7 @@ public class MScGrammarDeclareListener implements SentenceParser {
     public void handlePreSequencePostAnd() {
         for (Activity preActivity : currentStatement.getPreActivities()) {
             String toActivity = preActivity.getName();
+            constraints.add(new DeclareConstraint(DeclareConstraintType.EXACTLY_ONE, toActivity, null));
             for (Activity postActivity : currentStatement.getPostActivities()) {
                 String fromActivity = postActivity.getName();
                 if (postActivity.getType() == ActivityType.ACTIVITY) {
@@ -200,7 +201,7 @@ public class MScGrammarDeclareListener implements SentenceParser {
             }
         }
 
-        constraints.addAll(HelperFunctions.getCoExistenceConstraintsForAnd(andActivities));
+//        constraints.addAll(HelperFunctions.getCoExistenceConstraintsForAnd(andActivities));
     }
 
     // XOR split

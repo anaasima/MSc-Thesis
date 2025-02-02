@@ -23,13 +23,11 @@ public interface SentenceParser {
 
     /**
      * Here we have some problems with the design of the model, look through notes to see what's it about
-     * UPDATE: Apparently not anymore? OLD: Here we must do Not Chain Succession between initial and end node and vice versa
      * After A ends, immediately start B and start C and start (D_or_E).
      * AlternateSuccession(A,B)
      * AlternateSuccession(A,C)
      * AlternatePrecedence(D,A)
      * AlternatePrecedence(E,A)
-     * Co-Existence(B,C) - this one should be between all AND branches
      * Not Co-Existence(D,E) - this one because they're part of an XOR
      * Exactly1(A)
      * DONE
@@ -71,6 +69,7 @@ public interface SentenceParser {
      * AlternateResponse(D,C)
      * AlternateResponse(E,C)
      * Not Co-Existence(D,E)
+     * Exactly1(C)
      * DONE
      */
     void handlePreSequencePostAnd();
