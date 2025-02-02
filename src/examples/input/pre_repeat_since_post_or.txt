@@ -5,7 +5,7 @@ Initially start "A".
 
 After "A" ends, immediately start "B".
 After "B" ends, immediately either start "C" or start "D".
-After either "C" ends or "D" ends, immediately either repeat since "B" or start "F" or start (SILENT_G_H).
+After either "C" ends or "D" ends, immediately repeat since "B" or start "F" or start (SILENT_G_H).
 After either "F" ends or (SILENT_G_H) ends, immediately start "X".
 
 After "X" ends, the process finishes.
